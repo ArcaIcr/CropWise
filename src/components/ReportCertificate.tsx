@@ -1,38 +1,22 @@
 import React from 'react';
 import { User, MapPin, Calendar, Activity, TrendingDown } from 'lucide-react';
 import type { IRecommendationResult } from '../services/recommendations';
+import type { 
+  IFertilizerReport, 
+  IFarmer, 
+  IPlot, 
+  ISoilReading, 
+  ICooperative, 
+  IUser 
+} from '../types/database';
 
 interface IReportCertificateProps {
-  report: {
-    id: string;
-    generatedAt: number;
-  };
-  farmer?: {
-    name: string;
-    phone: string;
-  };
-  plot?: {
-    plotName: string;
-    areaHectares: number;
-    crop: string;
-    cropStage: string;
-    plantingDate: string;
-  };
-  reading?: {
-    ph: number;
-    nitrogen: number;
-    phosphorus: number;
-    potassium: number;
-  };
-  coop?: {
-    name: string;
-    barangay: string;
-    city: string;
-    province: string;
-  };
-  user?: {
-    name: string;
-  };
+  report: IFertilizerReport;
+  farmer?: IFarmer | null;
+  plot?: IPlot | null;
+  reading?: ISoilReading | null;
+  coop?: ICooperative | null;
+  user?: IUser | null;
   translate: (text: string) => string;
 }
 
@@ -51,7 +35,8 @@ export const ReportCertificate: React.FC<IReportCertificateProps> = ({
   user,
   translate
 }) => {
-  const recData: IRecommendationResult = JSON.parse(report.generatedAt ? (report as any).recommendationSummary || '{}' : '{}');
+  const recData: IRecommendationResult = JSON.parse(report.recommendationSummary || '{}');
+
 
   return (
     <div className="bg-slate-900/25 border border-white/5 rounded-3xl p-6 sm:p-8 space-y-6 print-card shadow-xl relative overflow-hidden">

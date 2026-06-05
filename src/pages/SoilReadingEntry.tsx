@@ -4,6 +4,8 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { Beaker, ArrowRight, Info, AlertTriangle } from 'lucide-react';
 import type { ISoilReading, IFertilizerReport } from '../types/database';
 import { generateRecommendation } from '../services/recommendations';
+import { SoilDial } from '../components/SoilDial';
+import { NutrientWell } from '../components/NutrientWell';
 
 interface ISoilReadingEntryProps {
   onReportGenerated: (reportId: string) => void;
@@ -219,102 +221,46 @@ export const SoilReadingEntry: React.FC<ISoilReadingEntryProps> = ({ onReportGen
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            
-            {/* pH Input */}
-            <div className="space-y-3 bg-slate-950/40 p-4 rounded-xl border border-white/5">
-              <div className="flex justify-between items-center">
-                <label className="text-[10px] text-slate-350 font-bold uppercase tracking-wider">
-                  Soil pH Scale
-                </label>
-                <span className="text-xs font-bold text-emerald-455 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-lg">{ph}</span>
-              </div>
-              <input
-                type="range"
-                min="3.5"
-                max="8.5"
-                step="0.1"
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+            {/* Soil pH Gauge Dial */}
+            <div className="w-full flex justify-center">
+              <SoilDial
                 value={ph}
-                onChange={e => setPh(Number(e.target.value))}
-                className="w-full h-1 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-500"
+                onChange={setPh}
               />
-              <div className="flex justify-between text-[9px] font-semibold text-slate-550 uppercase tracking-wider">
-                <span className="text-red-500/70">Acidic</span>
-                <span className="text-emerald-500/70">Neutral</span>
-                <span className="text-amber-500/70">Alkaline</span>
-              </div>
             </div>
 
-            {/* Nitrogen Input */}
-            <div className="space-y-3 bg-slate-950/40 p-4 rounded-xl border border-white/5">
-              <div className="flex justify-between items-center">
-                <label className="text-[10px] text-slate-355 font-bold uppercase tracking-wider">
-                  Nitrogen (N)
-                </label>
-                <span className="text-xs font-bold text-emerald-455 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-lg">{nitrogen} ppm</span>
-              </div>
-              <input
-                type="range"
-                min="0"
-                max="60"
-                step="1"
+            {/* Nitrogen Well */}
+            <div className="w-full flex justify-center">
+              <NutrientWell
+                label="Nitrogen (N)"
                 value={nitrogen}
-                onChange={e => setNitrogen(Number(e.target.value))}
-                className="w-full h-1 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-500"
+                maxVal={60}
+                colorType="nitrogen"
+                onChange={setNitrogen}
               />
-              <div className="flex justify-between text-[9px] font-semibold text-slate-550 uppercase tracking-wider">
-                <span className="text-red-500/70">Low</span>
-                <span className="text-emerald-500/70">Medium</span>
-                <span className="text-emerald-500/70">High</span>
-              </div>
             </div>
 
-            {/* Phosphorus Input */}
-            <div className="space-y-3 bg-slate-950/40 p-4 rounded-xl border border-white/5">
-              <div className="flex justify-between items-center">
-                <label className="text-[10px] text-slate-355 font-bold uppercase tracking-wider">
-                  Phosphorus (P)
-                </label>
-                <span className="text-xs font-bold text-emerald-455 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-lg">{phosphorus} ppm</span>
-              </div>
-              <input
-                type="range"
-                min="0"
-                max="25"
-                step="1"
+            {/* Phosphorus Well */}
+            <div className="w-full flex justify-center">
+              <NutrientWell
+                label="Phosphorus (P)"
                 value={phosphorus}
-                onChange={e => setPhosphorus(Number(e.target.value))}
-                className="w-full h-1 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-500"
+                maxVal={25}
+                colorType="phosphorus"
+                onChange={setPhosphorus}
               />
-              <div className="flex justify-between text-[9px] font-semibold text-slate-550 uppercase tracking-wider">
-                <span className="text-red-500/70">Low</span>
-                <span className="text-emerald-500/70">Medium</span>
-                <span className="text-emerald-500/70">High</span>
-              </div>
             </div>
 
-            {/* Potassium Input */}
-            <div className="space-y-3 bg-slate-950/40 p-4 rounded-xl border border-white/5">
-              <div className="flex justify-between items-center">
-                <label className="text-[10px] text-slate-355 font-bold uppercase tracking-wider">
-                  Potassium (K)
-                </label>
-                <span className="text-xs font-bold text-emerald-455 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-lg">{potassium} ppm</span>
-              </div>
-              <input
-                type="range"
-                min="0"
-                max="120"
-                step="1"
+            {/* Potassium Well */}
+            <div className="w-full flex justify-center">
+              <NutrientWell
+                label="Potassium (K)"
                 value={potassium}
-                onChange={e => setPotassium(Number(e.target.value))}
-                className="w-full h-1 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-500"
+                maxVal={120}
+                colorType="potassium"
+                onChange={setPotassium}
               />
-              <div className="flex justify-between text-[9px] font-semibold text-slate-550 uppercase tracking-wider">
-                <span className="text-red-500/70">Low</span>
-                <span className="text-emerald-500/70">Medium</span>
-                <span className="text-emerald-500/70">High</span>
-              </div>
             </div>
           </div>
         </div>

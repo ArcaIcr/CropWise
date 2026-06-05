@@ -9,6 +9,8 @@ import {
 } from 'lucide-react';
 import { generateRecommendation } from '../services/recommendations';
 import type { IRecommendationRule, ISoilReading } from '../types/database';
+import { SoilDial } from '../components/SoilDial';
+import { NutrientWell } from '../components/NutrientWell';
 
 interface ILandingPageProps {
   onLaunch: () => void;
@@ -239,73 +241,46 @@ export const LandingPage: React.FC<ILandingPageProps> = ({ onLaunch }) => {
                 <p className="text-[11px] text-slate-500 mt-1">Interact with sliders to test real-time agronomic recommendations:</p>
               </div>
 
-              {/* Sliders container */}
-              <div className="space-y-4">
-                {/* pH Slider */}
-                <div className="space-y-1.5">
-                  <div className="flex justify-between items-center text-xs">
-                    <span className="text-slate-400 font-medium">Soil pH Level</span>
-                    <span className="font-bold text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded">{simPh}</span>
-                  </div>
-                  <input
-                    type="range"
-                    min="3.5"
-                    max="8.5"
-                    step="0.1"
+              {/* Sliders container replaced with premium bioluminescent widgets */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {/* pH Dial */}
+                <div className="flex justify-center">
+                  <SoilDial
                     value={simPh}
-                    onChange={e => setSimPh(Number(e.target.value))}
-                    className="w-full h-1 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-500"
+                    onChange={setSimPh}
                   />
                 </div>
 
-                {/* Nitrogen Slider */}
-                <div className="space-y-1.5">
-                  <div className="flex justify-between items-center text-xs">
-                    <span className="text-slate-400 font-medium">Nitrogen (N)</span>
-                    <span className="font-bold text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded">{simN} ppm</span>
-                  </div>
-                  <input
-                    type="range"
-                    min="0"
-                    max="60"
-                    step="1"
+                {/* Nitrogen Well */}
+                <div className="flex justify-center">
+                  <NutrientWell
+                    label="Nitrogen (N)"
                     value={simN}
-                    onChange={e => setSimN(Number(e.target.value))}
-                    className="w-full h-1 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-500"
+                    maxVal={60}
+                    colorType="nitrogen"
+                    onChange={setSimN}
                   />
                 </div>
 
-                {/* Phosphorus Slider */}
-                <div className="space-y-1.5">
-                  <div className="flex justify-between items-center text-xs">
-                    <span className="text-slate-400 font-medium">Phosphorus (P)</span>
-                    <span className="font-bold text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded">{simP} ppm</span>
-                  </div>
-                  <input
-                    type="range"
-                    min="0"
-                    max="25"
-                    step="1"
+                {/* Phosphorus Well */}
+                <div className="flex justify-center">
+                  <NutrientWell
+                    label="Phosphorus (P)"
                     value={simP}
-                    onChange={e => setSimP(Number(e.target.value))}
-                    className="w-full h-1 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-500"
+                    maxVal={25}
+                    colorType="phosphorus"
+                    onChange={setSimP}
                   />
                 </div>
 
-                {/* Potassium Slider */}
-                <div className="space-y-1.5">
-                  <div className="flex justify-between items-center text-xs">
-                    <span className="text-slate-400 font-medium">Potassium (K)</span>
-                    <span className="font-bold text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded">{simK} ppm</span>
-                  </div>
-                  <input
-                    type="range"
-                    min="0"
-                    max="120"
-                    step="1"
+                {/* Potassium Well */}
+                <div className="flex justify-center">
+                  <NutrientWell
+                    label="Potassium (K)"
                     value={simK}
-                    onChange={e => setSimK(Number(e.target.value))}
-                    className="w-full h-1 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-500"
+                    maxVal={120}
+                    colorType="potassium"
+                    onChange={setSimK}
                   />
                 </div>
               </div>

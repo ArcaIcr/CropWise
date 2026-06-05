@@ -3,6 +3,8 @@ import { db } from '../db/db';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { UserPlus, Plus, Landmark, Calendar, MapPin, Phone, Search, Info, Users } from 'lucide-react';
 import type { IFarmer, IPlot } from '../types/database';
+import { AddFarmerForm } from '../components/AddFarmerForm';
+import { AddPlotForm } from '../components/AddPlotForm';
 
 /**
  * FarmerRegistry Page component. Provides searchable farmer registry details, 
@@ -13,21 +15,9 @@ export const FarmerRegistry: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [selectedFarmerId, setSelectedFarmerId] = useState<string | null>(null);
 
-  // Form states for adding farmer
+  // Form toggle states
   const [showAddFarmer, setShowAddFarmer] = useState<boolean>(false);
-  const [farmerName, setFarmerName] = useState<string>('');
-  const [farmerPhone, setFarmerPhone] = useState<string>('');
-  const [farmerBarangay, setFarmerBarangay] = useState<string>('');
-  const [farmerNotes, setFarmerNotes] = useState<string>('');
-
-  // Form states for adding plot
   const [showAddPlot, setShowAddPlot] = useState<boolean>(false);
-  const [plotName, setPlotName] = useState<string>('');
-  const [plotCrop, setPlotCrop] = useState<string>('Corn');
-  const [plotArea, setPlotArea] = useState<number>(1.0);
-  const [plotLocation, setPlotLocation] = useState<string>('');
-  const [plotPlantingDate, setPlotPlantingDate] = useState<string>('');
-  const [plotStage, setPlotStage] = useState<string>('Basal');
 
   // Query farmers from DB
   const farmers = useLiveQuery(
@@ -57,30 +47,21 @@ export const FarmerRegistry: React.FC = () => {
   /**
    * Submits the farmer registration form.
    */
-  const handleAddFarmer = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!farmerName || !farmerPhone || !farmerBarangay) return;
-
+  const handleFarmerSubmit = async (farmerData: { name: string; phone: string; barangay: string; notes?: string }) => {
     try {
       const newFarmer: IFarmer = {
         id: crypto.randomUUID(),
         cooperativeId: 'coop-default-uuid',
-        name: farmerName,
-        phone: farmerPhone,
-        barangay: farmerBarangay,
-        notes: farmerNotes || undefined,
+        name: farmerData.name,
+        phone: farmerData.phone,
+        barangay: farmerData.barangay,
+        notes: farmerData.notes,
         createdAt: Date.now(),
         updatedAt: Date.now(),
         isDeleted: false
       };
 
       await db.farmers.add(newFarmer);
-      
-      // Reset form
-      setFarmerName('');
-      setFarmerPhone('');
-      setFarmerBarangay('');
-      setFarmerNotes('');
       setShowAddFarmer(false);
       setSelectedFarmerId(newFarmer.id);
     } catch (err) {
@@ -91,34 +72,32 @@ export const FarmerRegistry: React.FC = () => {
   /**
    * Submits the plot registration form.
    */
-  const handleAddPlot = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!selectedFarmerId || !plotName || !plotPlantingDate) return;
-
+  const handlePlotSubmit = async (plotData: {
+    plotName: string;
+    crop: string;
+    areaHectares: number;
+    locationText?: string;
+    plantingDate: string;
+    cropStage: string;
+  }) => {
+    if (!selectedFarmerId) return;
     try {
       const newPlot: IPlot = {
         id: crypto.randomUUID(),
         farmerId: selectedFarmerId,
         cooperativeId: 'coop-default-uuid',
-        plotName,
-        crop: plotCrop,
-        areaHectares: Number(plotArea),
-        locationText: plotLocation || undefined,
-        plantingDate: plotPlantingDate,
-        cropStage: plotStage,
+        plotName: plotData.plotName,
+        crop: plotData.crop,
+        areaHectares: plotData.areaHectares,
+        locationText: plotData.locationText,
+        plantingDate: plotData.plantingDate,
+        cropStage: plotData.cropStage,
         createdAt: Date.now(),
         updatedAt: Date.now(),
         isDeleted: false
       };
 
       await db.plots.add(newPlot);
-
-      // Reset form
-      setPlotName('');
-      setPlotLocation('');
-      setPlotPlantingDate('');
-      setPlotStage('Basal');
-      setPlotArea(1.0);
       setShowAddPlot(false);
     } catch (err) {
       console.error('Failed to add plot:', err);
@@ -146,69 +125,10 @@ export const FarmerRegistry: React.FC = () => {
 
       {/* Register Farmer Form Section */}
       {showAddFarmer && (
-        <form onSubmit={handleAddFarmer} className="bg-slate-900/60 border border-white/5 rounded-2xl p-5 sm:p-6 space-y-4 animate-fadeIn">
-          <h3 className="text-xs font-bold uppercase tracking-wider text-emerald-400">New Farmer Registration</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="space-y-1.5">
-              <label className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">Full Name *</label>
-              <input
-                type="text"
-                required
-                value={farmerName}
-                onChange={e => setFarmerName(e.target.value)}
-                placeholder="Juan dela Cruz"
-                className="w-full bg-slate-950 border border-white/5 focus:border-emerald-500/30 focus:ring-1 focus:ring-emerald-500/20 rounded-xl px-3.5 py-2 text-xs text-slate-100 placeholder-slate-600 outline-none transition-all"
-              />
-            </div>
-            <div className="space-y-1.5">
-              <label className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">Mobile Phone *</label>
-              <input
-                type="text"
-                required
-                value={farmerPhone}
-                onChange={e => setFarmerPhone(e.target.value)}
-                placeholder="0917-XXX-XXXX"
-                className="w-full bg-slate-950 border border-white/5 focus:border-emerald-500/30 focus:ring-1 focus:ring-emerald-500/20 rounded-xl px-3.5 py-2 text-xs text-slate-100 placeholder-slate-600 outline-none transition-all"
-              />
-            </div>
-            <div className="space-y-1.5">
-              <label className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">Barangay Location *</label>
-              <input
-                type="text"
-                required
-                value={farmerBarangay}
-                onChange={e => setFarmerBarangay(e.target.value)}
-                placeholder="e.g. Sumpong"
-                className="w-full bg-slate-950 border border-white/5 focus:border-emerald-500/30 focus:ring-1 focus:ring-emerald-500/20 rounded-xl px-3.5 py-2 text-xs text-slate-100 placeholder-slate-600 outline-none transition-all"
-              />
-            </div>
-          </div>
-          <div className="space-y-1.5">
-            <label className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">Internal Field Notes</label>
-            <textarea
-              value={farmerNotes}
-              onChange={e => setFarmerNotes(e.target.value)}
-              placeholder="E.g., Farms corn split crop with rice. Soil has historic nitrogen deficiencies."
-              rows={2}
-              className="w-full bg-slate-950 border border-white/5 focus:border-emerald-500/30 focus:ring-1 focus:ring-emerald-500/20 rounded-xl px-3.5 py-2 text-xs text-slate-100 placeholder-slate-600 outline-none transition-all resize-none"
-            />
-          </div>
-          <div className="flex items-center justify-end space-x-3">
-            <button
-              type="button"
-              onClick={() => setShowAddFarmer(false)}
-              className="bg-slate-800 hover:bg-slate-700 text-slate-350 font-semibold text-xs px-4 py-2 rounded-xl transition cursor-pointer"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              className="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs px-4 py-2 rounded-xl transition cursor-pointer shadow-md"
-            >
-              Save Farmer
-            </button>
-          </div>
-        </form>
+        <AddFarmerForm
+          onSubmit={handleFarmerSubmit}
+          onCancel={() => setShowAddFarmer(false)}
+        />
       )}
 
       {/* Grid view split */}
@@ -297,93 +217,10 @@ export const FarmerRegistry: React.FC = () => {
 
               {/* Add Plot Form overlay */}
               {showAddPlot && (
-                <form onSubmit={handleAddPlot} className="bg-slate-950/40 border border-white/5 rounded-2xl p-5 space-y-4 animate-fadeIn">
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-emerald-400">Add Farm Plot</h4>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-1.5">
-                      <label className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">Plot Name / Reference *</label>
-                      <input
-                        type="text"
-                        required
-                        value={plotName}
-                        onChange={e => setPlotName(e.target.value)}
-                        placeholder="e.g. North Hillside"
-                        className="w-full bg-slate-900 border border-white/5 focus:border-emerald-500/30 focus:ring-1 focus:ring-emerald-500/20 rounded-xl px-3.5 py-2 text-xs text-slate-100 placeholder-slate-600 outline-none transition-all"
-                      />
-                    </div>
-                    <div className="space-y-1.5">
-                      <label className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">Cultivated Crop *</label>
-                      <select
-                        value={plotCrop}
-                        onChange={e => setPlotCrop(e.target.value)}
-                        className="w-full bg-slate-900 border border-white/5 focus:border-emerald-500/30 rounded-xl px-3.5 py-2 text-xs text-slate-100 outline-none transition-all"
-                      >
-                        <option value="Corn">Corn (White/Yellow)</option>
-                        <option value="Rice">Rice (Lowland)</option>
-                      </select>
-                    </div>
-                    <div className="space-y-1.5">
-                      <label className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">Size (Hectares) *</label>
-                      <input
-                        type="number"
-                        step="0.01"
-                        required
-                        min="0.05"
-                        value={plotArea}
-                        onChange={e => setPlotArea(Number(e.target.value))}
-                        className="w-full bg-slate-900 border border-white/5 focus:border-emerald-500/30 rounded-xl px-3.5 py-2 text-xs text-slate-100 outline-none transition-all"
-                      />
-                    </div>
-                    <div className="space-y-1.5">
-                      <label className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">Planting Date *</label>
-                      <input
-                        type="date"
-                        required
-                        value={plotPlantingDate}
-                        onChange={e => setPlotPlantingDate(e.target.value)}
-                        className="w-full bg-slate-900 border border-white/5 focus:border-emerald-500/30 rounded-xl px-3.5 py-2 text-xs text-slate-100 outline-none transition-all"
-                      />
-                    </div>
-                    <div className="space-y-1.5">
-                      <label className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">Location Reference</label>
-                      <input
-                        type="text"
-                        value={plotLocation}
-                        onChange={e => setPlotLocation(e.target.value)}
-                        placeholder="Near the municipal boundary marker"
-                        className="w-full bg-slate-900 border border-white/5 focus:border-emerald-500/30 focus:ring-1 focus:ring-emerald-500/20 rounded-xl px-3.5 py-2 text-xs text-slate-100 placeholder-slate-600 outline-none transition-all"
-                      />
-                    </div>
-                    <div className="space-y-1.5">
-                      <label className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">Current Stage</label>
-                      <select
-                        value={plotStage}
-                        onChange={e => setPlotStage(e.target.value)}
-                        className="w-full bg-slate-900 border border-white/5 focus:border-emerald-500/30 rounded-xl px-3.5 py-2 text-xs text-slate-100 outline-none transition-all"
-                      >
-                        <option value="Basal">Land Preparation / Basal Stage</option>
-                        <option value="Early Vegetative">Early Vegetative (V1-V5 / Early Tillering)</option>
-                        <option value="Vegetative">Active Vegetative (V6-V10 / Active Tillering)</option>
-                        <option value="Reproductive">Reproductive (Tasseling / Panicle Initiation)</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-end space-x-3">
-                    <button
-                      type="button"
-                      onClick={() => setShowAddPlot(false)}
-                      className="bg-slate-800 hover:bg-slate-700 text-slate-350 font-semibold text-xs px-4 py-2 rounded-xl transition cursor-pointer"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      type="submit"
-                      className="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs px-4 py-2 rounded-xl transition cursor-pointer shadow-md"
-                    >
-                      Save Plot
-                    </button>
-                  </div>
-                </form>
+                <AddPlotForm
+                  onSubmit={handlePlotSubmit}
+                  onCancel={() => setShowAddPlot(false)}
+                />
               )}
 
               {/* Plots List */}

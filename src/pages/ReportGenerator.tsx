@@ -5,16 +5,11 @@ import {
   Printer, 
   Share2, 
   Globe, 
-  MapPin, 
-  Calendar, 
-  FileText,
-  User,
-  TrendingDown,
-  Activity,
-  CheckCircle,
-  Copy
+  FileText
 } from 'lucide-react';
 import type { IRecommendationResult } from '../services/recommendations';
+import { ReportCertificate } from '../components/ReportCertificate';
+import { SmsShareModal } from '../components/SmsShareModal';
 
 // Multilingual translations database for seeding local languages offline
 const translations: Record<string, Record<string, string>> = {
@@ -108,7 +103,6 @@ export const ReportGenerator: React.FC<IReportGeneratorProps> = ({
 }) => {
   const [lang, setLang] = useState<'en' | 'tl' | 'ceb'>('en');
   const [showShareModal, setShowShareModal] = useState<boolean>(false);
-  const [copied, setCopied] = useState<boolean>(false);
 
   // Load all fertilizer reports
   const reports = useLiveQuery(
@@ -182,11 +176,6 @@ export const ReportGenerator: React.FC<IReportGeneratorProps> = ({
     return text;
   };
 
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(getSmsText());
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
 
   const handlePrint = () => {
     window.print();
@@ -345,146 +334,15 @@ export const ReportGenerator: React.FC<IReportGeneratorProps> = ({
                   </button>
                 </div>
               </div>
-
-              {/* Main Printed Report Container */}
-              <div className="bg-slate-900/25 border border-white/5 rounded-3xl p-6 sm:p-8 space-y-6 print-card shadow-xl">
-                {/* Header logo / coop banner */}
-                <div className="flex flex-col sm:flex-row justify-between items-start border-b border-white/5 pb-5 gap-4">
-                  <div>
-                    <h3 className="text-base font-bold text-slate-100 print-title flex items-center">
-                      <span className="text-emerald-400 mr-2">✓</span> CropWise Diagnostic Report
-                    </h3>
-                    <p className="text-[10px] text-slate-400 mt-1">{selectedDetails.coop?.name || 'Northern Mindanao Farmers Association'}</p>
-                    <p className="text-[9px] text-slate-550 mt-0.5">{selectedDetails.coop?.barangay}, {selectedDetails.coop?.city}, {selectedDetails.coop?.province}</p>
-                  </div>
-                  <div className="text-left sm:text-right text-[10px] text-slate-450 space-y-1">
-                    <p>Report ID: <span className="font-mono text-slate-300 font-bold">{selectedDetails.report.id.substring(0, 13).toUpperCase()}</span></p>
-                    <p>Generated: <span className="text-slate-300 font-bold">{new Date(selectedDetails.report.generatedAt).toLocaleString()}</span></p>
-                    <p>Field Officer: <span className="text-slate-300 font-bold">{selectedDetails.user?.name}</span></p>
-                  </div>
-                </div>
-
-                {/* Farmer and Plot details row */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 bg-slate-950/40 p-4 rounded-2xl border border-white/5 print-card">
-                  <div className="flex items-center space-x-3">
-                    <div className="p-2 bg-slate-900 rounded-lg text-slate-450 border border-white/5">
-                      <User className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <p className="text-[9px] uppercase text-slate-500 tracking-wider font-bold">Farmer</p>
-                      <h4 className="text-xs font-bold text-slate-200">{selectedDetails.farmer?.name}</h4>
-                      <p className="text-[10px] text-slate-450">{selectedDetails.farmer?.phone}</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-center space-x-3">
-                    <div className="p-2 bg-slate-900 rounded-lg text-slate-455 border border-white/5">
-                      <MapPin className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <p className="text-[9px] uppercase text-slate-500 tracking-wider font-bold">Cultivated Plot</p>
-                      <h4 className="text-xs font-bold text-slate-200">{selectedDetails.plot?.plotName}</h4>
-                      <p className="text-[10px] text-slate-450">{selectedDetails.plot?.areaHectares} Hectare(s) • {selectedDetails.plot?.crop}</p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center space-x-3">
-                    <div className="p-2 bg-slate-900 rounded-lg text-slate-455 border border-white/5">
-                      <Calendar className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <p className="text-[9px] uppercase text-slate-500 tracking-wider font-bold">Crop Cycle</p>
-                      <h4 className="text-xs font-bold text-slate-200">Stage: {selectedDetails.plot?.cropStage}</h4>
-                      <p className="text-[10px] text-slate-455">Planted: {selectedDetails.plot?.plantingDate}</p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Input chemistry raw values */}
-                <div className="space-y-3">
-                  <h4 className="text-[10px] font-bold uppercase tracking-wider text-slate-500 flex items-center">
-                    <Activity className="w-3.5 h-3.5 text-emerald-500 mr-2" />
-                    Soil Chemistry Status
-                  </h4>
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                    <div className="bg-slate-950/40 border border-white/5 p-3 rounded-2xl print-card text-center">
-                      <span className="text-[9px] text-slate-500 uppercase tracking-wider block">Soil pH</span>
-                      <span className="text-base font-bold text-slate-200 mt-1 block">{selectedDetails.reading?.ph}</span>
-                    </div>
-                    <div className="bg-slate-950/40 border border-white/5 p-3 rounded-2xl print-card text-center">
-                      <span className="text-[9px] text-slate-500 uppercase tracking-wider block">Nitrogen (N)</span>
-                      <span className="text-base font-bold text-slate-200 mt-1 block">{selectedDetails.reading?.nitrogen} ppm</span>
-                    </div>
-                    <div className="bg-slate-950/40 border border-white/5 p-3 rounded-2xl print-card text-center">
-                      <span className="text-[9px] text-slate-500 uppercase tracking-wider block">Phosphorus (P)</span>
-                      <span className="text-base font-bold text-slate-200 mt-1 block">{selectedDetails.reading?.phosphorus} ppm</span>
-                    </div>
-                    <div className="bg-slate-950/40 border border-white/5 p-3 rounded-2xl print-card text-center">
-                      <span className="text-[9px] text-slate-500 uppercase tracking-wider block">Potassium (K)</span>
-                      <span className="text-base font-bold text-slate-200 mt-1 block">{selectedDetails.reading?.potassium} ppm</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Specific Soil deficiencies and actions list */}
-                <div className="space-y-4">
-                  <h4 className="text-[10px] font-bold uppercase tracking-wider text-slate-500 flex items-center">
-                    <TrendingDown className="w-3.5 h-3.5 text-emerald-500 mr-2" />
-                    Diagnostic Interpretations & Steps
-                  </h4>
-                  <div className="space-y-3">
-                    {(() => {
-                      const recData: IRecommendationResult = JSON.parse(selectedDetails.report.recommendationSummary);
-                      return recData.recommendations.map((rec, idx) => (
-                        <div key={idx} className="bg-slate-950/30 border border-white/5 p-4 rounded-2xl print-card space-y-2">
-                          <div className="flex items-center justify-between">
-                            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-450">
-                              {rec.parameter === 'ph' ? 'Soil pH' : rec.parameter.toUpperCase()} Parameter
-                            </span>
-                            <span className="text-[10px] font-bold text-emerald-450 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-lg">
-                              {translate(rec.interpretation)}
-                            </span>
-                          </div>
-                          <p className="text-xs text-slate-300 leading-relaxed">{translate(rec.recommendationText)}</p>
-                          {rec.rateKgPerHectare > 0 && (
-                            <div className="flex flex-wrap gap-4 pt-1 text-[10px] text-slate-500 font-semibold uppercase tracking-wider">
-                              <span>Rate: <strong className="text-slate-300">{rec.rateKgPerHectare} kg/Hectare</strong></span>
-                              <span>•</span>
-                              <span>Total needed: <strong className="text-emerald-450">{rec.totalNeededKg} kg ({rec.totalBags} bags)</strong></span>
-                              <span>•</span>
-                              <span>Fertilizer Type: <strong className="text-slate-300">{rec.fertilizerType}</strong></span>
-                            </div>
-                          )}
-                        </div>
-                      ));
-                    })()}
-                  </div>
-                </div>
-
-                {/* Aggregate fertilizer summary block */}
-                <div className="bg-emerald-600/5 border border-emerald-500/20 rounded-2xl p-5 print-card">
-                  <h4 className="text-[10px] font-bold uppercase tracking-wider text-emerald-400 mb-3">Total fertilizer packages required</h4>
-                  <div className="divide-y divide-emerald-500/10 space-y-2.5">
-                    {(() => {
-                      const recData: IRecommendationResult = JSON.parse(selectedDetails.report.recommendationSummary);
-                      if (recData.totalFertilizers.length === 0) {
-                        return <p className="text-xs text-slate-400 pt-2">No commercial fertilizer inputs required for this plot.</p>;
-                      }
-                      return recData.totalFertilizers.map((tf, idx) => (
-                        <div key={idx} className="flex justify-between items-center text-xs pt-2.5 first:pt-0">
-                          <span className="font-semibold text-slate-300">{tf.fertilizerType}</span>
-                          <span className="font-bold text-emerald-450">{tf.totalBags} Bag(s) <span className="text-[10px] text-slate-500 font-normal">({tf.totalKg} kg)</span></span>
-                        </div>
-                      ));
-                    })()}
-                  </div>
-                </div>
-
-                {/* Disclaimer/Standards note */}
-                <div className="border-t border-white/5 pt-4 text-[9px] text-slate-550 text-center leading-relaxed">
-                  <p>Disclaimer: This recommendation is rule-based and computed based on regional parameters published by the Philippine Bureau of Soils and Water Management (DA-BSWM) and Project SARAI. Consult a licensed agriculturist if crop health anomalies persist.</p>
-                </div>
-              </div>
+              <ReportCertificate
+                report={selectedDetails.report}
+                farmer={selectedDetails.farmer}
+                plot={selectedDetails.plot}
+                reading={selectedDetails.reading}
+                coop={selectedDetails.coop}
+                user={selectedDetails.user}
+                translate={translate}
+              />
             </div>
           ) : (
             <div className="bg-slate-900/10 border border-slate-800/80 rounded-3xl p-16 text-center text-slate-500 text-xs flex flex-col items-center justify-center space-y-3 min-h-[300px]">
@@ -498,52 +356,11 @@ export const ReportGenerator: React.FC<IReportGeneratorProps> = ({
         </div>
       </div>
 
-      {/* SMS Share Dialog Overlay */}
-      {showShareModal && selectedDetails && (
-        <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 no-print">
-          <div className="bg-slate-900 border border-white/5 rounded-3xl w-full max-w-lg overflow-hidden shadow-2xl animate-scaleIn">
-            <div className="p-5 border-b border-white/5 flex justify-between items-center">
-              <h3 className="font-bold text-xs text-slate-100 uppercase tracking-wider flex items-center">
-                <Share2 className="w-4 h-4 text-emerald-500 mr-2" /> Share SMS Summary
-              </h3>
-              <button
-                onClick={() => setShowShareModal(false)}
-                className="text-slate-400 hover:text-slate-200 text-xs font-semibold cursor-pointer"
-              >
-                Close
-              </button>
-            </div>
-            
-            <div className="p-5 space-y-4">
-              <p className="text-[11px] text-slate-400 leading-relaxed">
-                Copy this formatted text to paste directly into SMS, Messenger, or WhatsApp to share with the farmer:
-              </p>
-              <textarea
-                readOnly
-                value={getSmsText()}
-                rows={10}
-                className="w-full bg-slate-950 border border-white/5 focus:border-emerald-500/30 rounded-2xl p-3.5 text-xs text-slate-350 font-mono outline-none resize-none leading-relaxed"
-              />
-            </div>
-
-            <div className="p-5 bg-slate-950/40 border-t border-white/5 flex justify-end space-x-3">
-              <button
-                onClick={() => setShowShareModal(false)}
-                className="bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-xs px-4 py-2.5 rounded-xl transition cursor-pointer"
-              >
-                Close
-              </button>
-              <button
-                onClick={copyToClipboard}
-                className="flex items-center space-x-1.5 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs px-4 py-2.5 rounded-xl transition cursor-pointer shadow-md active:scale-95"
-              >
-                {copied ? <CheckCircle className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                <span>{copied ? 'Copied!' : 'Copy Text'}</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <SmsShareModal
+        isOpen={showShareModal && !!selectedDetails}
+        onClose={() => setShowShareModal(false)}
+        smsText={getSmsText()}
+      />
     </div>
   );
 };

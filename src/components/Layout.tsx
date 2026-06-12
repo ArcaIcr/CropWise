@@ -224,12 +224,12 @@ export const Layout: React.FC<ILayoutProps> = ({ children, activeTab, setActiveT
 
           <div className="pt-2 border-t border-zinc-900 mt-2">
             <button
-              onClick={onExit}
-              className="w-full flex items-center space-x-3 px-4 py-2.5 rounded-xl text-xs font-medium border border-transparent text-zinc-400 hover:bg-zinc-900/20 hover:text-zinc-200 transition cursor-pointer"
-            >
-              <Home className="w-4 h-4" />
-              <span>Exit to Homepage</span>
-            </button>
+                onClick={onExit}
+                className="w-full flex items-center space-x-3 px-4 py-2.5 rounded-xl text-xs font-medium border border-emerald-900/30 bg-emerald-950/20 text-emerald-400 hover:bg-emerald-800/30 hover:text-emerald-200 transition cursor-pointer backdrop-blur-xl"
+              >
+                <Home className="w-4 h-4" />
+                <span>Exit to Homepage</span>
+              </button>
           </div>
 
           {/* Database Widget */}

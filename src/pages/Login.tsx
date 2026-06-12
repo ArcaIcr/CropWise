@@ -74,11 +74,11 @@ export const Login: React.FC<ILoginProps> = ({ onLoginSuccess, onBackToHome }) =
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 bg-gradient-to-br from-zinc-950 via-slate-900 to-emerald-950/20 text-slate-100 flex flex-col items-center justify-center p-4 font-sans relative">
+    <div className="min-h-screen bg-zinc-950/20 text-zinc-100 flex flex-col items-center justify-center p-4 font-sans relative">
       {/* Background glow spotlights */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] h-[350px] bg-emerald-500/5 blur-[90px] rounded-full pointer-events-none" />
 
-      <div className="w-full max-w-md bg-slate-900/55 backdrop-blur-xl border border-white/5 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6 relative z-10">
+      <div className="w-full max-w-md bg-zinc-950/55 backdrop-blur-xl border border-zinc-800/40 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6 relative z-10">
         
         {/* Header Logo */}
         <div className="text-center space-y-2">
@@ -86,7 +86,7 @@ export const Login: React.FC<ILoginProps> = ({ onLoginSuccess, onBackToHome }) =
             <CloudLightning className="w-6 h-6 animate-pulse" />
           </div>
           <h2 className="text-xl font-bold text-white tracking-tight">Officer Authentication</h2>
-          <p className="text-xs text-slate-400">Log in to sync regional diagnostic rules and plots.</p>
+          <p className="text-xs text-zinc-400">Log in to sync regional diagnostic rules and plots.</p>
         </div>
 
         {error && (
@@ -98,50 +98,46 @@ export const Login: React.FC<ILoginProps> = ({ onLoginSuccess, onBackToHome }) =
 
         {/* Credentials Form */}
         <form onSubmit={handleLogin} className="space-y-4">
-          <div className="space-y-1.5">
-            <label className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">Email Address</label>
-            <div className="relative">
-              <Mail className="w-4 h-4 text-slate-500 absolute left-3 top-3" />
-              <input
-                type="email"
-                required
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-                placeholder="Juan.delacruz@cropwise.org"
-                className="w-full bg-slate-950 border border-white/5 focus:border-emerald-500/30 rounded-xl pl-10 pr-4 py-2.5 text-xs text-slate-100 placeholder-slate-650 outline-none transition-all"
-              />
-            </div>
-          </div>
+  <label className="text-[10px] text-zinc-400 font-semibold uppercase tracking-wider">Email Address</label>
+  <div className="relative">
+    <Mail className="w-4 h-4 text-zinc-500 absolute left-3 top-3" />
+    <input
+      type="email"
+      required
+      value={email}
+      onChange={e => setEmail(e.target.value)}
+      placeholder="Juan.delacruz@cropwise.org"
+      className="w-full bg-zinc-950 border border-zinc-800/40 focus:border-emerald-500/30 rounded-xl pl-10 pr-4 py-2.5 text-xs text-zinc-100 placeholder-zinc-650 outline-none transition-all"
+    />
+  </div>
 
-          <div className="space-y-1.5">
-            <label className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">Security Password</label>
-            <div className="relative">
-              <Lock className="w-4 h-4 text-slate-500 absolute left-3 top-3" />
-              <input
-                type="password"
-                required
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-                placeholder="••••••••"
-                className="w-full bg-slate-950 border border-white/5 focus:border-emerald-500/30 rounded-xl pl-10 pr-4 py-2.5 text-xs text-slate-100 placeholder-slate-650 outline-none transition-all"
-              />
-            </div>
-          </div>
+  <label className="text-[10px] text-zinc-400 font-semibold uppercase tracking-wider">Security Password</label>
+  <div className="relative">
+    <Lock className="w-4 h-4 text-zinc-500 absolute left-3 top-3" />
+    <input
+      type="password"
+      required
+      value={password}
+      onChange={e => setPassword(e.target.value)}
+      placeholder="••••••••"
+      className="w-full bg-zinc-950 border border-zinc-800/40 focus:border-emerald-500/30 rounded-xl pl-10 pr-4 py-2.5 text-xs text-zinc-100 placeholder-zinc-650 outline-none transition-all"
+    />
+  </div>
 
-          <button
-            type="submit"
-            disabled={isLoading}
-            className="w-full flex items-center justify-center space-x-2 bg-emerald-600 hover:bg-emerald-500 disabled:bg-slate-800 disabled:text-slate-500 text-white font-semibold text-xs py-3 rounded-xl transition shadow-lg shadow-emerald-950/20 active:scale-95 cursor-pointer hover:scale-[1.01]"
-          >
-            <span>{isLoading ? 'Verifying Credentials...' : 'Authenticate'}</span>
-            {!isLoading && <ArrowRight className="w-4 h-4" />}
-          </button>
-        </form>
+  <button
+    type="submit"
+    disabled={isLoading}
+    className="w-full flex items-center justify-center space-x-2 bg-emerald-950/30 border border-emerald-900/30 text-emerald-400 hover:bg-emerald-800/30 disabled:bg-zinc-800 disabled:text-zinc-500 rounded-xl text-xs font-semibold py-3 transition shadow-lg hover:scale-[1.02] active:scale-95 cursor-pointer"
+  >
+    <span>{isLoading ? 'Verifying Credentials...' : 'Authenticate'}</span>
+    {!isLoading && <ArrowRight className="w-4 h-4" />}
+  </button>
+</form>
 
         {/* Demo Account Box */}
-        <div className="bg-slate-950/50 border border-white/5 rounded-2xl p-4 space-y-2.5">
+        <div className="bg-zinc-950/50 border border-zinc-800/40 rounded-2xl p-4 space-y-2.5">
           <div className="flex items-center justify-between">
-            <span className="text-[9px] font-bold uppercase tracking-wider text-slate-400 flex items-center">
+            <span className="text-[9px] font-bold uppercase tracking-wider text-zinc-400 flex items-center">
               <Sparkles className="w-3 h-3 text-emerald-400 mr-1" /> Demonstration Credentials
             </span>
             <button
@@ -151,9 +147,9 @@ export const Login: React.FC<ILoginProps> = ({ onLoginSuccess, onBackToHome }) =
               Autofill
             </button>
           </div>
-          <div className="text-[10px] text-slate-450 space-y-1 font-mono">
-            <p>Email: <span className="text-slate-300 font-semibold select-all">gabriel.agila@cropwise.org</span></p>
-            <p>Password: <span className="text-slate-300 font-semibold select-all">password123</span></p>
+          <div className="text-[10px] text-zinc-450 space-y-1 font-mono">
+            <p>Email: <span className="text-zinc-300 font-semibold select-all">gabriel.agila@cropwise.org</span></p>
+            <p>Password: <span className="text-zinc-300 font-semibold select-all">password123</span></p>
           </div>
         </div>
 
@@ -161,7 +157,7 @@ export const Login: React.FC<ILoginProps> = ({ onLoginSuccess, onBackToHome }) =
         <div className="text-center no-print">
           <button
             onClick={onBackToHome}
-            className="inline-flex items-center space-x-1.5 text-slate-500 hover:text-slate-300 text-xs font-semibold cursor-pointer transition"
+            className="inline-flex items-center space-x-1.5 text-zinc-500 hover:text-zinc-300 text-xs font-semibold cursor-pointer transition"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>Cancel & Go Back</span>

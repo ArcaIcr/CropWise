@@ -166,12 +166,12 @@ export const LandingPage: React.FC<ILandingPageProps> = ({ onLaunch }) => {
             <a href="#how-it-works" className="text-xs text-zinc-400 hover:text-zinc-200 transition font-medium hidden sm:inline-block">How it works</a>
             <a href="#features" className="text-xs text-zinc-400 hover:text-zinc-200 transition font-medium hidden sm:inline-block">System Features</a>
             <button
-              onClick={onLaunch}
-              className="flex items-center space-x-2 bg-emerald-600/90 hover:bg-emerald-600 text-white font-semibold text-xs px-4 py-2.5 rounded-xl transition shadow-sm active:scale-95 cursor-pointer"
-            >
-              <span>Launch Field Portal</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </button>
+                onClick={onLaunch}
+                className="flex items-center space-x-2 bg-emerald-950/30 border border-emerald-900/30 text-emerald-400 hover:bg-emerald-800/30 backdrop-blur-xl rounded-xl px-4 py-2.5 text-xs font-semibold transition shadow-lg hover:scale-[1.02] active:scale-95 cursor-pointer"
+              >
+                <span>Launch Field Portal</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
           </div>
         </div>
       </nav>

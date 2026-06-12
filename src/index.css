@@ -1,60 +1,49 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;850&family=Sora:wght@300;400;600;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=Sora:wght@300;400;500;600;700&display=swap');
 @import "tailwindcss";
 
 @layer base {
   body {
     font-family: 'Sora', system-ui, -apple-system, sans-serif;
-    background-color: #05070a;
+    background-color: #050807;
+    background-image: radial-gradient(circle at 50% 0%, #0d1e18 0%, #050807 80%);
+    background-attachment: fixed;
+    color: #f1f5f4;
   }
+  
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Outfit', sans-serif;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.015em;
+    color: #ffffff;
   }
 }
 
-/* Custom mesh animations for floating agritech blobs */
-@keyframes float-blob {
-  0%, 100% {
-    transform: translate(0px, 0px) scale(1);
-  }
-  33% {
-    transform: translate(30px, -45px) scale(1.08);
-  }
-  66% {
-    transform: translate(-25px, 20px) scale(0.95);
-  }
+/* Custom scrollbars for a premium desktop console feel */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
 }
 
-.animate-blob {
-  animation: float-blob 18s infinite ease-in-out;
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
 }
 
-.animation-delay-2000 {
-  animation-delay: 2s;
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
 }
 
-.animation-delay-4000 {
-  animation-delay: 4s;
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(16, 185, 129, 0.2);
 }
 
-/* Custom styling for ranges and dials */
-input[type="range"]::-webkit-slider-thumb {
-  border: 2px solid #00f5d4;
-  height: 16px;
-  width: 16px;
-  border-radius: 9999px;
-  background: #ffffff;
-  cursor: pointer;
-  box-shadow: 0 0 10px rgba(0, 245, 212, 0.4);
-  -webkit-appearance: none;
-  margin-top: -6px;
+/* Smooth transition defaults for all interactive states */
+.transition-default {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
-input[type="range"]::-moz-range-thumb {
-  border: 2px solid #00f5d4;
-  height: 16px;
-  width: 16px;
-  border-radius: 9999px;
-  background: #ffffff;
-  cursor: pointer;
-  box-shadow: 0 0 10px rgba(0, 245, 212, 0.4);
+
+/* Glassmorphism panel base */
+.glass-panel {
+  background: rgba(15, 23, 20, 0.4);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.04);
 }

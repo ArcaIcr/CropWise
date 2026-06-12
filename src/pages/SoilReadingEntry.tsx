@@ -144,51 +144,51 @@ export const SoilReadingEntry: React.FC<ISoilReadingEntryProps> = ({ onReportGen
 
   return (
     <div className="max-w-3xl mx-auto space-y-6">
-      <div className="border-b border-white/5 pb-4">
-        <h2 className="text-xl font-bold text-slate-100 m-0">Log Soil Readings</h2>
-        <p className="text-slate-400 text-xs mt-1">Input regional N-P-K soil values to calculate customized fertilizer recommendation reports.</p>
+      <div className="border-b border-zinc-900 pb-4">
+        <h2 className="text-base font-bold text-white m-0">Log Soil Readings</h2>
+        <p className="text-zinc-400 text-xs mt-1">Input regional N-P-K soil values to calculate customized fertilizer recommendation reports.</p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {errorMessage && (
-          <div className="flex items-center space-x-2 bg-red-500/10 border border-red-500/25 text-red-400 p-4 rounded-xl text-xs animate-shake">
+          <div className="flex items-center space-x-2.5 bg-red-950/25 border border-red-900/30 text-red-400 p-4 rounded-xl text-xs">
             <AlertTriangle className="w-5 h-5 shrink-0" />
             <span>{errorMessage}</span>
           </div>
         )}
 
         {/* Section 1: Plot Selector */}
-        <div className="bg-slate-900/50 border border-white/5 rounded-2xl p-5 sm:p-6 space-y-4">
-          <h3 className="text-[10px] font-bold uppercase tracking-wider text-emerald-400">1. Target Location</h3>
+        <div className="bg-zinc-950/20 border border-zinc-900 rounded-2xl p-5 sm:p-6 space-y-4">
+          <h3 className="text-[9px] font-bold uppercase tracking-wider text-zinc-400">1. Target Location</h3>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-1.5">
-              <label className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">Select Farmer *</label>
+              <label className="text-[10px] text-zinc-400 font-semibold uppercase tracking-wider">Select Farmer *</label>
               <select
                 required
                 value={selectedFarmerId}
                 onChange={e => setSelectedFarmerId(e.target.value)}
-                className="w-full bg-slate-950 border border-white/5 focus:border-emerald-500/30 rounded-xl px-3.5 py-2.5 text-xs text-slate-100 outline-none transition-all cursor-pointer"
+                className="w-full bg-zinc-950/25 border border-zinc-900 focus:border-emerald-500/30 rounded-xl px-3.5 py-2.5 text-xs text-zinc-100 outline-none transition-all cursor-pointer"
               >
-                <option value="">-- Choose a registered farmer --</option>
+                <option value="" className="bg-zinc-950">-- Choose a registered farmer --</option>
                 {farmers?.map(farmer => (
-                  <option key={farmer.id} value={farmer.id}>{farmer.name} (Brgy. {farmer.barangay})</option>
+                  <option key={farmer.id} value={farmer.id} className="bg-zinc-950">{farmer.name} (Brgy. {farmer.barangay})</option>
                 ))}
               </select>
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">Select Plot *</label>
+              <label className="text-[10px] text-zinc-400 font-semibold uppercase tracking-wider">Select Plot *</label>
               <select
                 required
                 disabled={!selectedFarmerId}
                 value={selectedPlotId}
                 onChange={e => setSelectedPlotId(e.target.value)}
-                className="w-full bg-slate-950 border border-white/5 focus:border-emerald-500/30 disabled:bg-slate-950 disabled:text-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-slate-100 outline-none transition-all cursor-pointer"
+                className="w-full bg-zinc-950/25 border border-zinc-900 focus:border-emerald-500/30 disabled:bg-zinc-950 disabled:text-zinc-700 rounded-xl px-3.5 py-2.5 text-xs text-zinc-100 outline-none transition-all cursor-pointer"
               >
-                <option value="">-- Choose target plot --</option>
+                <option value="" className="bg-zinc-950">-- Choose target plot --</option>
                 {plots?.map(plot => (
-                  <option key={plot.id} value={plot.id}>{plot.plotName} ({plot.crop} - {plot.areaHectares} Hectares)</option>
+                  <option key={plot.id} value={plot.id} className="bg-zinc-950">{plot.plotName} ({plot.crop} - {plot.areaHectares} Hectares)</option>
                 ))}
               </select>
             </div>
@@ -196,15 +196,15 @@ export const SoilReadingEntry: React.FC<ISoilReadingEntryProps> = ({ onReportGen
         </div>
 
         {/* Section 2: Soil Reading Values */}
-        <div className="bg-slate-900/50 border border-white/5 rounded-2xl p-5 sm:p-6 space-y-6">
-          <div className="flex items-center justify-between border-b border-white/5 pb-4">
-            <h3 className="text-[10px] font-bold uppercase tracking-wider text-emerald-400">2. Soil Chemistry (N-P-K & pH)</h3>
-            <div className="flex items-center space-x-1 bg-slate-950 border border-white/5 p-0.5 rounded-xl text-[10px]">
+        <div className="bg-zinc-950/20 border border-zinc-900 rounded-2xl p-5 sm:p-6 space-y-6">
+          <div className="flex items-center justify-between border-b border-zinc-900 pb-4">
+            <h3 className="text-[9px] font-bold uppercase tracking-wider text-zinc-400">2. Soil Chemistry (N-P-K & pH)</h3>
+            <div className="flex items-center space-x-1 bg-zinc-950/45 border border-zinc-900 p-0.5 rounded-xl text-[10px]">
               <button
                 type="button"
                 onClick={() => setReadingSource('manual')}
                 className={`px-3 py-1.5 rounded-lg font-bold uppercase tracking-wider transition cursor-pointer ${
-                  readingSource === 'manual' ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-400 hover:text-slate-200'
+                  readingSource === 'manual' ? 'bg-emerald-600/90 text-white shadow-sm' : 'text-zinc-450 hover:text-zinc-200'
                 }`}
               >
                 Manual
@@ -213,7 +213,7 @@ export const SoilReadingEntry: React.FC<ISoilReadingEntryProps> = ({ onReportGen
                 type="button"
                 onClick={() => setReadingSource('hardware')}
                 className={`px-3 py-1.5 rounded-lg font-bold uppercase tracking-wider transition cursor-pointer ${
-                  readingSource === 'hardware' ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-400 hover:text-slate-200'
+                  readingSource === 'hardware' ? 'bg-emerald-600/90 text-white shadow-sm' : 'text-zinc-450 hover:text-zinc-200'
                 }`}
               >
                 Probe/Sensor
@@ -221,7 +221,7 @@ export const SoilReadingEntry: React.FC<ISoilReadingEntryProps> = ({ onReportGen
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 items-center justify-items-center">
             {/* Soil pH Gauge Dial */}
             <div className="w-full flex justify-center">
               <SoilDial
@@ -267,40 +267,40 @@ export const SoilReadingEntry: React.FC<ISoilReadingEntryProps> = ({ onReportGen
 
         {/* Section 3: Sensor Parameters (Visible for hardware/sensor readings) */}
         {readingSource === 'hardware' && (
-          <div className="bg-slate-900/50 border border-white/5 rounded-2xl p-5 sm:p-6 space-y-4 animate-fadeIn">
-            <h3 className="text-[10px] font-bold uppercase tracking-wider text-emerald-400">3. Environmental Readings (IoT Probe Sensors)</h3>
+          <div className="bg-zinc-950/20 border border-zinc-900 rounded-2xl p-5 sm:p-6 space-y-4 animate-fadeIn">
+            <h3 className="text-[9px] font-bold uppercase tracking-wider text-zinc-400">3. Environmental Readings (IoT Probe Sensors)</h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="space-y-1.5">
-                <label className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">Moisture (%)</label>
+                <label className="text-[10px] text-zinc-400 font-semibold uppercase tracking-wider">Moisture (%)</label>
                 <input
                   type="number"
                   value={moisture}
                   onChange={e => setMoisture(Number(e.target.value))}
-                  className="w-full bg-slate-950 border border-white/5 focus:border-emerald-500/30 rounded-xl px-3.5 py-2 text-xs text-slate-100 outline-none transition-all"
+                  className="w-full bg-zinc-950/25 border border-zinc-900 focus:border-emerald-500/30 rounded-xl px-3.5 py-2 text-xs text-zinc-100 outline-none transition-all"
                 />
               </div>
               <div className="space-y-1.5">
-                <label className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">Temperature (°C)</label>
+                <label className="text-[10px] text-zinc-400 font-semibold uppercase tracking-wider">Temperature (°C)</label>
                 <input
                   type="number"
                   step="0.1"
                   value={temperature}
                   onChange={e => setTemperature(Number(e.target.value))}
-                  className="w-full bg-slate-950 border border-white/5 focus:border-emerald-500/30 rounded-xl px-3.5 py-2 text-xs text-slate-100 outline-none transition-all"
+                  className="w-full bg-zinc-950/25 border border-zinc-900 focus:border-emerald-500/30 rounded-xl px-3.5 py-2 text-xs text-zinc-100 outline-none transition-all"
                 />
               </div>
               <div className="space-y-1.5">
-                <label className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">EC (dS/m)</label>
+                <label className="text-[10px] text-zinc-400 font-semibold uppercase tracking-wider">EC (dS/m)</label>
                 <input
                   type="number"
                   step="0.01"
                   value={ec}
                   onChange={e => setEc(Number(e.target.value))}
-                  className="w-full bg-slate-950 border border-white/5 focus:border-emerald-500/30 rounded-xl px-3.5 py-2 text-xs text-slate-100 outline-none transition-all"
+                  className="w-full bg-zinc-950/25 border border-zinc-900 focus:border-emerald-500/30 rounded-xl px-3.5 py-2 text-xs text-zinc-100 outline-none transition-all"
                 />
               </div>
             </div>
-            <div className="flex items-start space-x-2 text-[10px] text-slate-500 bg-slate-950/45 p-2.5 rounded-xl border border-white/5">
+            <div className="flex items-start space-x-2 text-[10px] text-zinc-550 bg-zinc-950/30 p-2.5 rounded-xl border border-zinc-900">
               <Info className="w-3.5 h-3.5 text-emerald-500/70 shrink-0 mt-0.5" />
               <span>Environmental factors are pulled dynamically from multi-depth sensor calibrations to verify soil condition index.</span>
             </div>
@@ -312,9 +312,9 @@ export const SoilReadingEntry: React.FC<ISoilReadingEntryProps> = ({ onReportGen
           <button
             type="submit"
             disabled={isSubmitting || !selectedPlotId}
-            className="flex items-center space-x-2 bg-emerald-600 disabled:bg-slate-800 disabled:text-slate-550 hover:bg-emerald-500 text-white font-semibold text-xs px-5 py-3 rounded-xl transition-all shadow-lg shadow-emerald-950/20 active:scale-95 cursor-pointer hover:scale-[1.01]"
+            className="flex items-center space-x-2 bg-emerald-600/90 disabled:bg-zinc-900 disabled:text-zinc-600 hover:bg-emerald-600 text-white font-semibold text-xs px-5 py-3 rounded-xl transition-all shadow-sm active:scale-95 cursor-pointer"
           >
-            <Beaker className="w-4.5 h-4.5 animate-pulse" />
+            <Beaker className="w-4 h-4" />
             <span>{isSubmitting ? 'Processing...' : 'Run Diagnostics'}</span>
             <ArrowRight className="w-4 h-4 ml-1" />
           </button>

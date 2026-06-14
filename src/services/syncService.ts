@@ -7,6 +7,8 @@ import type { SyncResult } from '../types/sync';
  * Reads the `syncEvents` Dexie log table for records that have not been
  * successfully synced yet, then upserts the corresponding row into the
  * remote table.
+ *
+ * @returns {Promise<SyncResult>} A promise resolving to the sync result.
  */
 export async function pushChanges(): Promise<SyncResult> {
   const result: SyncResult = { pushed: 0, pulled: 0, conflictsResolved: 0 };
@@ -21,7 +23,7 @@ export async function pushChanges(): Promise<SyncResult> {
     // Upsert into Supabase – the primary key is `id`
     const { error } = await supabase
       .from('soil_readings')
-      .upsert(reading, { returning: 'minimal' });
+      .upsert(reading);
     if (!error) {
       await db.soilReadings.update(reading.id, { syncedAt: Date.now() });
       result.pushed++;
@@ -34,6 +36,9 @@ export async function pushChanges(): Promise<SyncResult> {
 /**
  * Pull remote changes newer than the last known sync timestamp.
  * For each table we query rows where `updated_at` > lastSync.
+ *
+ * @param {number} lastSync - The last sync timestamp in milliseconds.
+ * @returns {Promise<SyncResult>} A promise resolving to the sync result.
  */
 export async function pullUpdates(lastSync: number): Promise<SyncResult> {
   const result: SyncResult = { pushed: 0, pulled: 0, conflictsResolved: 0 };
@@ -70,10 +75,12 @@ export async function pullUpdates(lastSync: number): Promise<SyncResult> {
 
 /**
  * Starts a periodic sync loop.
- * @param intervalMs Interval between sync cycles (default 2 minutes).
+ *
+ * @param {number} [intervalMs=120000] - Interval between sync cycles in milliseconds (default 2 minutes).
+ * @returns {() => void} A cleanup function to stop the periodic sync loop.
  */
-export function startPeriodicSync(intervalMs = 120_000): void {
-  let timerId: NodeJS.Timeout | null = null;
+export function startPeriodicSync(intervalMs = 120_000): () => void {
+  let timerId: number | null = null;
   const sync = async () => {
     const now = Date.now();
     await pushChanges();
@@ -82,10 +89,10 @@ export function startPeriodicSync(intervalMs = 120_000): void {
 
   // Run immediately then schedule
   sync();
-  timerId = setInterval(sync, intervalMs);
+  timerId = window.setInterval(sync, intervalMs);
 
   // Return a cleanup function if needed
   return () => {
-    if (timerId) clearInterval(timerId);
+    if (timerId) window.clearInterval(timerId);
   };
 }

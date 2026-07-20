@@ -186,7 +186,7 @@ export const LandingPage: React.FC<ILandingPageProps> = ({ onLaunch }) => {
           </div>
           
           <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-white leading-[112%] max-w-2xl">
-            Smarter Fertilizer Decisions, <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-450 to-emerald-300">Delivered Offline.</span>
+            Smarter Fertilizer Decisions, <span className="block sm:inline text-transparent bg-clip-text bg-gradient-to-r from-emerald-450 to-emerald-300">Delivered Offline.</span>
           </h1>
           
           <p className="text-sm text-zinc-400 max-w-xl leading-relaxed">

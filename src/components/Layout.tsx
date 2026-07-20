@@ -11,7 +11,9 @@ import {
   Database,
   CloudLightning,
   Home,
-  Sparkles
+  Sparkles,
+  Menu,
+  X
 } from 'lucide-react';
 
 interface ILayoutProps {
@@ -30,6 +32,7 @@ interface ILayoutProps {
  */
 export const Layout: React.FC<ILayoutProps> = ({ children, activeTab, setActiveTab, onExit }) => {
   const [isOnline, setIsOnline] = useState<boolean>(navigator.onLine);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
   const [isSyncing, setIsSyncing] = useState<boolean>(false);
   const [unsyncedCount, setUnsyncedCount] = useState<number>(0);
   const [showSyncSuccess, setShowSyncSuccess] = useState<boolean>(false);
@@ -118,6 +121,14 @@ export const Layout: React.FC<ILayoutProps> = ({ children, activeTab, setActiveT
       <header className="bg-zinc-950/45 backdrop-blur-md border-b border-zinc-900 sticky top-0 z-50 no-print">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <div className="flex items-center space-x-3">
+            {/* Hamburger menu button for mobile */}
+            <button
+              onClick={() => setIsMobileMenuOpen(true)}
+              className="p-2 -ml-2 rounded-xl text-zinc-400 hover:text-zinc-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 md:hidden cursor-pointer"
+            >
+              <Menu className="w-5 h-5" />
+            </button>
+
             <div className="p-2 bg-emerald-950/50 border border-emerald-900/40 rounded-xl text-emerald-400">
               <CloudLightning className="w-5 h-5" />
             </div>
@@ -171,8 +182,8 @@ export const Layout: React.FC<ILayoutProps> = ({ children, activeTab, setActiveT
       {/* Main App Workspace Grid */}
       <div className="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 flex flex-col md:flex-row gap-8">
         
-        {/* Navigation Sidebar */}
-        <aside className="w-full md:w-64 flex flex-col space-y-1.5 no-print">
+        {/* Navigation Sidebar (Desktop view) */}
+        <aside className="hidden md:flex md:w-64 flex-col space-y-1.5 no-print">
           {/* Profile Card */}
           <div className="bg-zinc-950/30 border border-zinc-900 rounded-2xl p-4 mb-4">
             <div className="flex items-center space-x-3">
@@ -246,7 +257,7 @@ export const Layout: React.FC<ILayoutProps> = ({ children, activeTab, setActiveT
           </div>
 
           {/* Database Widget */}
-          <div className="mt-auto pt-8 hidden md:block">
+          <div className="mt-auto pt-8">
             <div className="bg-zinc-950/20 border border-zinc-900/60 rounded-2xl p-4 text-[10px] text-zinc-500 space-y-1.5 leading-relaxed">
               <div className="flex items-center space-x-1.5 font-bold text-zinc-400 uppercase tracking-wider text-[9px]">
                 <Database className="w-3.5 h-3.5 text-emerald-500/60" />
@@ -256,6 +267,108 @@ export const Layout: React.FC<ILayoutProps> = ({ children, activeTab, setActiveT
             </div>
           </div>
         </aside>
+
+        {/* Mobile Drawer (Slide-out menu) */}
+        {isMobileMenuOpen && (
+          <div className="relative z-55 md:hidden">
+            {/* Backdrop overlay */}
+            <div 
+              className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity" 
+              onClick={() => setIsMobileMenuOpen(false)}
+            />
+            
+            {/* Drawer menu panel */}
+            <div className="fixed inset-y-0 left-0 flex max-w-full">
+              <div className="w-64 bg-zinc-950 border-r border-zinc-905 p-5 flex flex-col space-y-1.5 shadow-2xl relative h-full">
+                
+                {/* Drawer Header with close button */}
+                <div className="flex items-center justify-between pb-4 border-b border-zinc-900 mb-4">
+                  <span className="text-[10px] font-extrabold uppercase text-zinc-400 tracking-wider">Navigation Menu</span>
+                  <button
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="p-1.5 rounded-lg text-zinc-500 hover:text-zinc-300 hover:bg-zinc-900 cursor-pointer"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+
+                {/* Profile Card */}
+                <div className="bg-zinc-950/50 border border-zinc-900 rounded-2xl p-4 mb-4">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-9 h-9 rounded-lg bg-zinc-900 border border-zinc-850 flex items-center justify-center">
+                      <span className="text-emerald-400 font-bold text-xs">GA</span>
+                    </div>
+                    <div>
+                      <p className="text-[9px] text-zinc-500 font-bold uppercase tracking-wider">Field Officer</p>
+                      <h3 className="text-xs font-semibold text-zinc-200">Gabriel Agila</h3>
+                      <p className="text-[9px] text-zinc-550">Bukidnon Coop #12</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Menu items */}
+                <button
+                  onClick={() => { setActiveTab('registry'); setIsMobileMenuOpen(false); }}
+                  className={`flex items-center space-x-3 px-4 py-2.5 rounded-xl text-xs font-medium border transition-all duration-150 cursor-pointer ${
+                    activeTab === 'registry'
+                      ? 'bg-emerald-950/30 border-emerald-900/30 text-emerald-400'
+                      : 'border-transparent text-zinc-400 hover:bg-zinc-900/20 hover:text-zinc-200'
+                  }`}
+                >
+                  <Users className="w-4 h-4" />
+                  <span>Farmer Registry</span>
+                </button>
+
+                <button
+                  onClick={() => { setActiveTab('test'); setIsMobileMenuOpen(false); }}
+                  className={`flex items-center space-x-3 px-4 py-2.5 rounded-xl text-xs font-medium border transition-all duration-150 cursor-pointer ${
+                    activeTab === 'test'
+                      ? 'bg-emerald-950/30 border-emerald-900/30 text-emerald-400'
+                      : 'border-transparent text-zinc-400 hover:bg-zinc-900/20 hover:text-zinc-200'
+                  }`}
+                >
+                  <PlusCircle className="w-4 h-4" />
+                  <span>New Soil Test</span>
+                </button>
+
+                <button
+                  onClick={() => { setActiveTab('reports'); setIsMobileMenuOpen(false); }}
+                  className={`flex items-center space-x-3 px-4 py-2.5 rounded-xl text-xs font-medium border transition-all duration-150 cursor-pointer ${
+                    activeTab === 'reports'
+                      ? 'bg-emerald-950/30 border-emerald-900/30 text-emerald-400'
+                      : 'border-transparent text-zinc-400 hover:bg-zinc-900/20 hover:text-zinc-200'
+                  }`}
+                >
+                  <ClipboardList className="w-4 h-4" />
+                  <span>Soil Reports</span>
+                </button>
+
+                <button
+                  onClick={() => { setActiveTab('advisor'); setIsMobileMenuOpen(false); }}
+                  className={`flex items-center space-x-3 px-4 py-2.5 rounded-xl text-xs font-medium border transition-all duration-150 cursor-pointer ${
+                    activeTab === 'advisor'
+                      ? 'bg-emerald-950/30 border-emerald-900/30 text-emerald-400'
+                      : 'border-transparent text-zinc-400 hover:bg-zinc-900/20 hover:text-zinc-200'
+                  }`}
+                >
+                  <Sparkles className="w-4 h-4" />
+                  <span>Crop Advisor</span>
+                </button>
+
+                <div className="pt-2 border-t border-zinc-900 mt-2">
+                  <button
+                    onClick={() => { onExit(); setIsMobileMenuOpen(false); }}
+                    className="w-full flex items-center space-x-3 px-4 py-2.5 rounded-xl text-xs font-medium border border-emerald-900/30 bg-emerald-950/20 text-emerald-400 hover:bg-emerald-800/30 hover:text-emerald-200 transition cursor-pointer backdrop-blur-xl"
+                  >
+                    <Home className="w-4 h-4" />
+                    <span>Exit to Homepage</span>
+                  </button>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Content Panel */}
         <main className="flex-1 bg-zinc-950/10 border border-zinc-900 rounded-3xl p-6 sm:p-8">

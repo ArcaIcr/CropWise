@@ -29,10 +29,11 @@ export const SoilReadingEntry: React.FC<ISoilReadingEntryProps> = ({ onReportGen
   const [phosphorus, setPhosphorus] = useState<number>(15);
   const [potassium, setPotassium] = useState<number>(80);
 
-  // Optional sensor fields
+  // Optional sensor and organic matter fields
   const [moisture, setMoisture] = useState<number>(30);
   const [temperature, setTemperature] = useState<number>(26.5);
   const [ec, setEc] = useState<number>(0.8);
+  const [organicMatter, setOrganicMatter] = useState<number>(2.5);
 
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -92,6 +93,7 @@ export const SoilReadingEntry: React.FC<ISoilReadingEntryProps> = ({ onReportGen
         moisture: Number(moisture),
         temperature: Number(temperature),
         electricalConductivity: Number(ec),
+        organicMatter: Number(organicMatter),
         collectedAt: now,
         createdBy: 'tech-default-uuid',
         createdAt: now,
@@ -265,47 +267,55 @@ export const SoilReadingEntry: React.FC<ISoilReadingEntryProps> = ({ onReportGen
           </div>
         </div>
 
-        {/* Section 3: Sensor Parameters (Visible for hardware/sensor readings) */}
-        {readingSource === 'hardware' && (
-          <div className="bg-zinc-950/20 border border-zinc-900 rounded-2xl p-5 sm:p-6 space-y-4 animate-fadeIn">
-            <h3 className="text-[9px] font-bold uppercase tracking-wider text-zinc-400">3. Environmental Readings (IoT Probe Sensors)</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="space-y-1.5">
-                <label className="text-[10px] text-zinc-400 font-semibold uppercase tracking-wider">Moisture (%)</label>
-                <input
-                  type="number"
-                  value={moisture}
-                  onChange={e => setMoisture(Number(e.target.value))}
-                  className="w-full bg-zinc-950/25 border border-zinc-900 focus:border-emerald-500/30 rounded-xl px-3.5 py-2 text-xs text-zinc-100 outline-none transition-all"
-                />
-              </div>
-              <div className="space-y-1.5">
-                <label className="text-[10px] text-zinc-400 font-semibold uppercase tracking-wider">Temperature (°C)</label>
-                <input
-                  type="number"
-                  step="0.1"
-                  value={temperature}
-                  onChange={e => setTemperature(Number(e.target.value))}
-                  className="w-full bg-zinc-950/25 border border-zinc-900 focus:border-emerald-500/30 rounded-xl px-3.5 py-2 text-xs text-zinc-100 outline-none transition-all"
-                />
-              </div>
-              <div className="space-y-1.5">
-                <label className="text-[10px] text-zinc-400 font-semibold uppercase tracking-wider">EC (dS/m)</label>
-                <input
-                  type="number"
-                  step="0.01"
-                  value={ec}
-                  onChange={e => setEc(Number(e.target.value))}
-                  className="w-full bg-zinc-950/25 border border-zinc-900 focus:border-emerald-500/30 rounded-xl px-3.5 py-2 text-xs text-zinc-100 outline-none transition-all"
-                />
-              </div>
+        {/* Section 3: Additional Diagnostic Parameters (Moisture, Salinity, organic matter) */}
+        <div className="bg-zinc-950/20 border border-zinc-900 rounded-2xl p-5 sm:p-6 space-y-4">
+          <h3 className="text-[9px] font-bold uppercase tracking-wider text-zinc-400">3. Additional Diagnostic Indices (Environment & Soil Matter)</h3>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="space-y-1.5">
+              <label className="text-[10px] text-zinc-400 font-semibold uppercase tracking-wider">Moisture (%)</label>
+              <input
+                type="number"
+                value={moisture}
+                onChange={e => setMoisture(Number(e.target.value))}
+                className="w-full bg-zinc-950/25 border border-zinc-900 focus:border-emerald-500/30 rounded-xl px-3.5 py-2 text-xs text-zinc-100 outline-none transition-all"
+              />
             </div>
-            <div className="flex items-start space-x-2 text-[10px] text-zinc-550 bg-zinc-950/30 p-2.5 rounded-xl border border-zinc-900">
-              <Info className="w-3.5 h-3.5 text-emerald-500/70 shrink-0 mt-0.5" />
-              <span>Environmental factors are pulled dynamically from multi-depth sensor calibrations to verify soil condition index.</span>
+            <div className="space-y-1.5">
+              <label className="text-[10px] text-zinc-400 font-semibold uppercase tracking-wider">Temperature (°C)</label>
+              <input
+                type="number"
+                step="0.1"
+                value={temperature}
+                onChange={e => setTemperature(Number(e.target.value))}
+                className="w-full bg-zinc-950/25 border border-zinc-900 focus:border-emerald-500/30 rounded-xl px-3.5 py-2 text-xs text-zinc-100 outline-none transition-all"
+              />
+            </div>
+            <div className="space-y-1.5">
+              <label className="text-[10px] text-zinc-400 font-semibold uppercase tracking-wider">EC / Salinity (dS/m)</label>
+              <input
+                type="number"
+                step="0.01"
+                value={ec}
+                onChange={e => setEc(Number(e.target.value))}
+                className="w-full bg-zinc-950/25 border border-zinc-900 focus:border-emerald-500/30 rounded-xl px-3.5 py-2 text-xs text-zinc-100 outline-none transition-all"
+              />
+            </div>
+            <div className="space-y-1.5">
+              <label className="text-[10px] text-zinc-400 font-semibold uppercase tracking-wider">Organic Matter (%)</label>
+              <input
+                type="number"
+                step="0.1"
+                value={organicMatter}
+                onChange={e => setOrganicMatter(Number(e.target.value))}
+                className="w-full bg-zinc-950/25 border border-zinc-900 focus:border-emerald-500/30 rounded-xl px-3.5 py-2 text-xs text-zinc-100 outline-none transition-all"
+              />
             </div>
           </div>
-        )}
+          <div className="flex items-start space-x-2 text-[10px] text-zinc-550 bg-zinc-950/30 p-2.5 rounded-xl border border-zinc-900">
+            <Info className="w-3.5 h-3.5 text-emerald-500/70 shrink-0 mt-0.5" />
+            <span>Additional diagnostic parameters are evaluated dynamically by the Crop Advisor to score plant compatibility.</span>
+          </div>
+        </div>
 
         {/* Submit Action */}
         <div className="flex items-center justify-end">

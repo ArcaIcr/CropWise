@@ -5,7 +5,8 @@ import {
   Printer, 
   Share2, 
   Globe, 
-  FileText
+  FileText,
+  Sparkles
 } from 'lucide-react';
 import type { IRecommendationResult } from '../services/recommendations';
 import { ReportCertificate } from '../components/ReportCertificate';
@@ -88,6 +89,7 @@ const translations: Record<string, Record<string, string>> = {
 interface IReportGeneratorProps {
   selectedReportId: string | null;
   setSelectedReportId: (id: string | null) => void;
+  onViewInAdvisor?: (farmerId: string, plotId: string) => void;
 }
 
 /**
@@ -99,7 +101,8 @@ interface IReportGeneratorProps {
  */
 export const ReportGenerator: React.FC<IReportGeneratorProps> = ({ 
   selectedReportId, 
-  setSelectedReportId 
+  setSelectedReportId,
+  onViewInAdvisor
 }) => {
   const [lang, setLang] = useState<'en' | 'tl' | 'ceb'>('en');
   const [showShareModal, setShowShareModal] = useState<boolean>(false);
@@ -318,6 +321,22 @@ export const ReportGenerator: React.FC<IReportGeneratorProps> = ({
                 </div>
 
                 <div className="flex space-x-2">
+                  {(() => {
+                    const farmer = selectedDetails?.farmer;
+                    const plot = selectedDetails?.plot;
+                    if (onViewInAdvisor && farmer && plot) {
+                      return (
+                        <button
+                          onClick={() => onViewInAdvisor(farmer.id, plot.id)}
+                          className="flex items-center space-x-1 bg-slate-850 hover:bg-slate-850/80 text-zinc-200 border border-white/5 font-semibold text-xs px-3.5 py-2 rounded-xl transition cursor-pointer active:scale-95"
+                        >
+                          <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
+                          <span>Open in Advisor</span>
+                        </button>
+                      );
+                    }
+                    return null;
+                  })()}
                   <button
                     onClick={() => setShowShareModal(true)}
                     className="flex items-center space-x-1 bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-xs px-3.5 py-2 rounded-xl transition cursor-pointer active:scale-95"

@@ -5,6 +5,7 @@ import { Layout } from './components/Layout';
 import { FarmerRegistry } from './pages/FarmerRegistry';
 import { SoilReadingEntry } from './pages/SoilReadingEntry';
 import { ReportGenerator } from './pages/ReportGenerator';
+import { AdvisorDashboard } from './pages/AdvisorDashboard';
 import type { IUser } from './types/database';
 
 /**
@@ -13,9 +14,11 @@ import type { IUser } from './types/database';
  */
 function App() {
   const [page, setPage] = useState<'home' | 'login' | 'app'>('home');
-  const [activeTab, setActiveTab] = useState<'registry' | 'test' | 'reports'>('registry');
+  const [activeTab, setActiveTab] = useState<'registry' | 'test' | 'reports' | 'advisor'>('registry');
   const [selectedReportId, setSelectedReportId] = useState<string | null>(null);
   const [, setCurrentUser] = useState<IUser | null>(null);
+  const [selectedFarmerId, setSelectedFarmerId] = useState<string>('farmer-juan-santos');
+  const [selectedPlotId, setSelectedPlotId] = useState<string>('plot-kalinawan');
 
   /**
    * Callback executed when a new soil test is completed. 
@@ -73,7 +76,25 @@ function App() {
       {activeTab === 'reports' && (
         <ReportGenerator 
           selectedReportId={selectedReportId} 
-          setSelectedReportId={setSelectedReportId} 
+          setSelectedReportId={setSelectedReportId}
+          onViewInAdvisor={(farmerId, plotId) => {
+            setSelectedFarmerId(farmerId);
+            setSelectedPlotId(plotId);
+            setActiveTab('advisor');
+          }}
+        />
+      )}
+      {activeTab === 'advisor' && (
+        <AdvisorDashboard 
+          selectedFarmerId={selectedFarmerId}
+          setSelectedFarmerId={setSelectedFarmerId}
+          selectedPlotId={selectedPlotId}
+          setSelectedPlotId={setSelectedPlotId}
+          onViewReport={(reportId) => {
+            setSelectedReportId(reportId);
+            setActiveTab('reports');
+          }}
+          onLogout={handleLogOut} 
         />
       )}
     </Layout>

@@ -10,13 +10,14 @@ import {
   CheckCircle,
   Database,
   CloudLightning,
-  Home
+  Home,
+  Sparkles
 } from 'lucide-react';
 
 interface ILayoutProps {
   children: React.ReactNode;
-  activeTab: 'registry' | 'test' | 'reports';
-  setActiveTab: (tab: 'registry' | 'test' | 'reports') => void;
+  activeTab: 'registry' | 'test' | 'reports' | 'advisor';
+  setActiveTab: (tab: 'registry' | 'test' | 'reports' | 'advisor') => void;
   onExit: () => void;
 }
 
@@ -220,6 +221,18 @@ export const Layout: React.FC<ILayoutProps> = ({ children, activeTab, setActiveT
           >
             <ClipboardList className="w-4 h-4" />
             <span>Soil Reports</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('advisor')}
+            className={`flex items-center space-x-3 px-4 py-2.5 rounded-xl text-xs font-medium border transition-all duration-150 cursor-pointer ${
+              activeTab === 'advisor'
+                ? 'bg-emerald-950/30 border-emerald-900/30 text-emerald-400'
+                : 'border-transparent text-zinc-400 hover:bg-zinc-900/20 hover:text-zinc-200'
+            }`}
+          >
+            <Sparkles className="w-4 h-4" />
+            <span>Crop Advisor</span>
           </button>
 
           <div className="pt-2 border-t border-zinc-900 mt-2">

@@ -275,4 +275,93 @@ db.on('populate', () => {
   db.cooperatives.add(defaultCoop);
   db.users.add(defaultUser);
   db.recommendationRules.bulkAdd(defaultRules);
+
+  // Seed default farmer for presentation
+  const defaultFarmer: IFarmer = {
+    id: 'farmer-juan-santos',
+    cooperativeId: defaultCoopId,
+    name: 'Juan Carlos Santos',
+    phone: '0917-234-5678',
+    barangay: 'Gusa',
+    notes: 'A dedicated farmer aiming for organic vegetable rotation.',
+    createdAt: Date.now(),
+    updatedAt: Date.now(),
+    isDeleted: false
+  };
+
+  const defaultPlots: IPlot[] = [
+    {
+      id: 'plot-kalinawan',
+      farmerId: 'farmer-juan-santos',
+      cooperativeId: defaultCoopId,
+      plotName: 'Kalinawan Farm',
+      crop: 'Corn',
+      areaHectares: 10.5,
+      locationText: 'Cagayan De Oro, Misamis Oriental',
+      plantingDate: '2025-08-01',
+      cropStage: 'Vegetative',
+      createdAt: Date.now(),
+      updatedAt: Date.now(),
+      isDeleted: false
+    },
+    {
+      id: 'plot-malasag',
+      farmerId: 'farmer-juan-santos',
+      cooperativeId: defaultCoopId,
+      plotName: 'Malasag Organic Farm',
+      crop: 'Tomato',
+      areaHectares: 8.2,
+      locationText: 'Malaybalay, Bukidnon',
+      plantingDate: '2025-08-15',
+      cropStage: 'Land Preparation',
+      createdAt: Date.now(),
+      updatedAt: Date.now(),
+      isDeleted: false
+    }
+  ];
+
+  const defaultReadings: ISoilReading[] = [
+    {
+      id: 'reading-kalinawan-1',
+      plotId: 'plot-kalinawan',
+      cooperativeId: defaultCoopId,
+      source: 'hardware',
+      ph: 6.8,
+      nitrogen: 45,
+      phosphorus: 12,
+      potassium: 85,
+      moisture: 80,
+      temperature: 27.5,
+      electricalConductivity: 1.2,
+      organicMatter: 2.2,
+      collectedAt: Date.now(),
+      createdBy: defaultUserId,
+      createdAt: Date.now(),
+      updatedAt: Date.now(),
+      isDeleted: false
+    },
+    {
+      id: 'reading-malasag-1',
+      plotId: 'plot-malasag',
+      cooperativeId: defaultCoopId,
+      source: 'manual',
+      ph: 5.2,
+      nitrogen: 25,
+      phosphorus: 5,
+      potassium: 40,
+      moisture: 45,
+      temperature: 28.2,
+      electricalConductivity: 0.5,
+      organicMatter: 1.2,
+      collectedAt: Date.now(),
+      createdBy: defaultUserId,
+      createdAt: Date.now(),
+      updatedAt: Date.now(),
+      isDeleted: false
+    }
+  ];
+
+  db.farmers.add(defaultFarmer);
+  db.plots.bulkAdd(defaultPlots);
+  db.soilReadings.bulkAdd(defaultReadings);
 });

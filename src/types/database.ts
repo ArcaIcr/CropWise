@@ -79,6 +79,7 @@ export interface ISoilReading {
   moisture?: number;
   temperature?: number;
   electricalConductivity?: number;
+  organicMatter?: number;
   collectedAt: number;
   syncedAt?: number;
   createdBy: string;

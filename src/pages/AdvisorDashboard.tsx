@@ -387,31 +387,31 @@ export const AdvisorDashboard: React.FC<IAdvisorDashboardProps> = ({
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-tr from-[#FAF8F5] via-[#FDFBF7] to-[#F1F6EC] text-zinc-800 p-4 sm:p-6 lg:p-8 font-sans antialiased">
+    <div className="text-zinc-800 space-y-5 sm:space-y-6 font-sans antialiased">
 
       {/* 1. Header welcome banner (Revamped Green Gradient) */}
-      <div className="w-full bg-gradient-to-r from-[#60993E] to-[#34701B] rounded-[28px] p-6 sm:p-8 shadow-[0_12px_30px_-8px_rgba(96,153,62,0.3)] flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 text-white relative overflow-hidden">
+      <div className="w-full bg-gradient-to-r from-[#60993E] to-[#34701B] rounded-2xl sm:rounded-[28px] p-5 sm:p-8 shadow-[0_12px_30px_-8px_rgba(96,153,62,0.3)] flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 text-white relative overflow-hidden">
 
         {/* Glow Spotlight Overlays */}
         <div className="absolute top-0 right-0 w-80 h-80 bg-white/5 blur-3xl rounded-full -mr-20 -mt-20 pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-60 h-60 bg-emerald-450/10 blur-2xl rounded-full -ml-16 -mb-16 pointer-events-none" />
 
-        <div className="flex items-center space-x-4.5 relative z-10">
-          <div className="w-14 h-14 bg-white/15 backdrop-blur-md border border-white/20 rounded-2xl flex items-center justify-center shadow-inner scale-100 hover:scale-105 transition duration-200">
-            <Leaf className="w-7 h-7 text-emerald-300 animate-pulse" />
+        <div className="flex items-center space-x-3.5 relative z-10">
+          <div className="w-12 h-12 sm:w-14 sm:h-14 bg-white/15 backdrop-blur-md border border-white/20 rounded-xl sm:rounded-2xl flex items-center justify-center shadow-inner scale-100 hover:scale-105 transition duration-200">
+            <Leaf className="w-6 sm:w-7 h-6 sm:h-7 text-emerald-300 animate-pulse" />
           </div>
           <div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight m-0 drop-shadow-xs">CropWise</h1>
-            <p className="text-white/90 text-sm mt-1.5 font-medium flex items-center gap-1.5">
-              <span className="w-2.5 h-2.5 rounded-full bg-emerald-450 inline-block animate-ping" />
-              Advisor Panel: <span className="font-bold text-emerald-200">{selectedFarmer ? selectedFarmer.name : 'Juan Carlos Santos'}</span>
+            <h1 className="text-xl sm:text-3xl font-extrabold tracking-tight m-0 drop-shadow-xs">CropWise</h1>
+            <p className="text-white/90 text-xs sm:text-sm mt-1 sm:mt-1.5 font-medium leading-relaxed">
+              <span className="w-2 h-2 rounded-full bg-emerald-450 inline-block mr-1.5 align-middle animate-ping" />
+              <span className="opacity-80">Advisor Panel:</span> <span className="font-extrabold text-emerald-200">{selectedFarmer ? selectedFarmer.name : 'Juan Carlos Santos'}</span>
             </p>
           </div>
         </div>
       </div>
 
       {/* Selector Area: Farmer switch & Language controls */}
-      <div className="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-4 mt-6">
+      <div className="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3 sm:gap-4 mt-4 sm:mt-6">
 
         {/* Farmer Dropdown Selector */}
         <div className="flex items-center space-x-2.5 bg-white/70 backdrop-blur-md border border-zinc-200 shadow-sm px-4 py-2 rounded-2xl">
@@ -447,7 +447,7 @@ export const AdvisorDashboard: React.FC<IAdvisorDashboardProps> = ({
       </div>
 
       {/* 2. My Farms Section */}
-      <div className="bg-white/80 backdrop-blur-md border border-zinc-200 shadow-sm rounded-[28px] p-6 sm:p-7 mt-6">
+      <div className="bg-white/80 backdrop-blur-md border border-zinc-200 shadow-sm rounded-2xl sm:rounded-[28px] p-4 sm:p-6 mt-4 sm:mt-6">
         <div className="flex items-center space-x-3 mb-5">
           <div className="p-2.5 bg-emerald-50 rounded-xl text-emerald-600">
             <MapPin className="w-5 h-5" />
@@ -509,7 +509,7 @@ export const AdvisorDashboard: React.FC<IAdvisorDashboardProps> = ({
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
 
           {/* 3. Soil Health Section */}
-          <div className="bg-white/80 backdrop-blur-md border border-zinc-200 shadow-sm rounded-[28px] p-6 sm:p-7 space-y-6">
+          <div className="bg-white/80 backdrop-blur-md border border-zinc-200 shadow-sm rounded-2xl sm:rounded-[28px] p-4 sm:p-6 space-y-5 sm:space-y-6">
             <div className="flex items-center justify-between border-b border-zinc-200/80 pb-4">
               <div className="flex items-center space-x-3">
                 <div className="p-2.5 bg-emerald-50 rounded-xl text-[#60993E]">
@@ -705,7 +705,7 @@ export const AdvisorDashboard: React.FC<IAdvisorDashboardProps> = ({
           </div>
 
           {/* 4. Weather Forecast Section */}
-          <div className="bg-white/80 backdrop-blur-md border border-zinc-200 shadow-sm rounded-[28px] p-6 sm:p-7 space-y-6">
+          <div className="bg-white/80 backdrop-blur-md border border-zinc-200 shadow-sm rounded-2xl sm:rounded-[28px] p-4 sm:p-6 space-y-5 sm:space-y-6">
             <div className="flex items-center space-x-3 border-b border-zinc-200/80 pb-4">
               <div className="p-2.5 bg-amber-50 rounded-xl text-amber-500">
                 <CloudSun className="w-5 h-5" />
@@ -842,7 +842,7 @@ export const AdvisorDashboard: React.FC<IAdvisorDashboardProps> = ({
 
       {/* 6. Recommended Crops Section */}
       {showRecommendedCrops && (
-        <div className="bg-white/80 backdrop-blur-md border border-zinc-200 shadow-sm rounded-[28px] p-6 sm:p-7 mt-8 space-y-6 animate-fadeIn">
+        <div className="bg-white/80 backdrop-blur-md border border-zinc-200 shadow-sm rounded-2xl sm:rounded-[28px] p-4 sm:p-6 mt-6 sm:mt-8 space-y-5 sm:space-y-6 animate-fadeIn">
 
           <div className="flex items-center space-x-3 border-b border-zinc-200/80 pb-4">
             <div className="p-2.5 bg-emerald-50 rounded-xl text-emerald-600">
@@ -870,7 +870,7 @@ export const AdvisorDashboard: React.FC<IAdvisorDashboardProps> = ({
               return (
                 <div
                   key={idx}
-                  className="bg-[#FAF9F5]/70 border border-zinc-150 hover:border-zinc-350 p-6 rounded-3xl flex flex-col md:flex-row items-start md:items-center justify-between gap-6 hover:shadow-md transition-all duration-300 relative overflow-hidden"
+                  className="bg-[#FAF9F5]/70 border border-zinc-150 hover:border-zinc-350 p-4 sm:p-6 rounded-2xl sm:rounded-3xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4 sm:gap-6 hover:shadow-md transition-all duration-300 relative overflow-hidden"
                 >
 
                   {/* Glowing match indicators for high compatibility */}

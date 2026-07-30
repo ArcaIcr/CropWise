@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { db } from '../db/db';
 import { useLiveQuery } from 'dexie-react-hooks';
+import { useAuth } from '../context/AuthContext';
 import { UserPlus, Plus, Landmark, Calendar, MapPin, Phone, Search, Info, Users } from 'lucide-react';
 import type { IFarmer, IPlot } from '../types/database';
 import { AddFarmerForm } from '../components/AddFarmerForm';
@@ -12,6 +13,7 @@ import { AddPlotForm } from '../components/AddPlotForm';
  * Polished with a premium glassmorphic dark agricultural theme.
  */
 export const FarmerRegistry: React.FC = () => {
+  const { user } = useAuth();
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [selectedFarmerId, setSelectedFarmerId] = useState<string | null>(null);
 
@@ -48,10 +50,11 @@ export const FarmerRegistry: React.FC = () => {
    * Submits the farmer registration form.
    */
   const handleFarmerSubmit = async (farmerData: { name: string; phone: string; barangay: string; notes?: string }) => {
+    if (!user) return;
     try {
       const newFarmer: IFarmer = {
         id: crypto.randomUUID(),
-        cooperativeId: 'coop-default-uuid',
+        cooperativeId: user.cooperativeId,
         name: farmerData.name,
         phone: farmerData.phone,
         barangay: farmerData.barangay,
@@ -80,12 +83,12 @@ export const FarmerRegistry: React.FC = () => {
     plantingDate: string;
     cropStage: string;
   }) => {
-    if (!selectedFarmerId) return;
+    if (!selectedFarmerId || !user) return;
     try {
       const newPlot: IPlot = {
         id: crypto.randomUUID(),
         farmerId: selectedFarmerId,
-        cooperativeId: 'coop-default-uuid',
+        cooperativeId: user.cooperativeId,
         plotName: plotData.plotName,
         crop: plotData.crop,
         areaHectares: plotData.areaHectares,

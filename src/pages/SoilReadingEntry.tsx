@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { db } from '../db/db';
 import { useLiveQuery } from 'dexie-react-hooks';
+import { useAuth } from '../context/AuthContext';
 import { Beaker, ArrowRight, Info, AlertTriangle } from 'lucide-react';
 import type { ISoilReading, IFertilizerReport } from '../types/database';
 import { generateRecommendation } from '../services/recommendations';
@@ -19,6 +20,7 @@ interface ISoilReadingEntryProps {
  * @param props Props containing the callback executed on successful report generation.
  */
 export const SoilReadingEntry: React.FC<ISoilReadingEntryProps> = ({ onReportGenerated }) => {
+  const { user } = useAuth();
   const [selectedFarmerId, setSelectedFarmerId] = useState<string>('');
   const [selectedPlotId, setSelectedPlotId] = useState<string>('');
   
@@ -67,6 +69,10 @@ export const SoilReadingEntry: React.FC<ISoilReadingEntryProps> = ({ onReportGen
       setErrorMessage('Please select a farmer and a target farm plot.');
       return;
     }
+    if (!user) {
+      setErrorMessage('User session expired. Please log in again.');
+      return;
+    }
 
     setIsSubmitting(true);
     setErrorMessage(null);
@@ -84,7 +90,7 @@ export const SoilReadingEntry: React.FC<ISoilReadingEntryProps> = ({ onReportGen
       const newReading: ISoilReading = {
         id: readingId,
         plotId: selectedPlotId,
-        cooperativeId: 'coop-default-uuid',
+        cooperativeId: user.cooperativeId,
         source: readingSource,
         ph: Number(ph),
         nitrogen: Number(nitrogen),
@@ -95,7 +101,7 @@ export const SoilReadingEntry: React.FC<ISoilReadingEntryProps> = ({ onReportGen
         electricalConductivity: Number(ec),
         organicMatter: Number(organicMatter),
         collectedAt: now,
-        createdBy: 'tech-default-uuid',
+        createdBy: user.id,
         createdAt: now,
         updatedAt: now,
         isDeleted: false
@@ -121,12 +127,12 @@ export const SoilReadingEntry: React.FC<ISoilReadingEntryProps> = ({ onReportGen
         id: reportId,
         plotId: selectedPlotId,
         soilReadingId: readingId,
-        cooperativeId: 'coop-default-uuid',
+        cooperativeId: user.cooperativeId,
         recommendationSummary: JSON.stringify(recResult),
         fertilizerTotalKg,
         reportStatus: 'finalized',
         generatedAt: now,
-        generatedBy: 'tech-default-uuid',
+        generatedBy: user.id,
         createdAt: now,
         updatedAt: now,
         isDeleted: false

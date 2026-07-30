@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { db } from '../db/db';
+import { useAuth } from '../context/AuthContext';
 import { 
   Wifi, 
   WifiOff, 
@@ -31,11 +32,18 @@ interface ILayoutProps {
  * @param props Props containing the layout children and navigation controllers.
  */
 export const Layout: React.FC<ILayoutProps> = ({ children, activeTab, setActiveTab, onExit }) => {
+  const { user, signOut } = useAuth();
   const [isOnline, setIsOnline] = useState<boolean>(navigator.onLine);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
   const [isSyncing, setIsSyncing] = useState<boolean>(false);
   const [unsyncedCount, setUnsyncedCount] = useState<number>(0);
   const [showSyncSuccess, setShowSyncSuccess] = useState<boolean>(false);
+
+  const userInitials = user?.cooperative?.name 
+    ? user.cooperative.name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2)
+    : user?.email?.slice(0, 2).toUpperCase() ?? 'GA';
+  const userName = user?.cooperative?.contactPerson || user?.email?.split('@')[0] || 'Field Officer';
+  const coopName = user?.cooperative?.name || 'Cooperative';
 
   // Sync count checker
   const checkUnsynced = async () => {
@@ -73,7 +81,7 @@ export const Layout: React.FC<ILayoutProps> = ({ children, activeTab, setActiveT
    * and records a sync log inside the sync_events table.
    */
   const handleSync = async () => {
-    if (unsyncedCount === 0 || isSyncing) return;
+    if (unsyncedCount === 0 || isSyncing || !user) return;
     
     setIsSyncing(true);
     
@@ -95,7 +103,7 @@ export const Layout: React.FC<ILayoutProps> = ({ children, activeTab, setActiveT
         // Record a sync event log
         await db.syncEvents.add({
           id: crypto.randomUUID(),
-          userId: 'tech-default-uuid',
+          userId: user.id,
           localRecordId: reading.id,
           tableName: 'soil_readings',
           syncStatus: 'success',
@@ -112,6 +120,11 @@ export const Layout: React.FC<ILayoutProps> = ({ children, activeTab, setActiveT
     } finally {
       setIsSyncing(false);
     }
+  };
+
+  const handleExit = async () => {
+    await signOut();
+    onExit();
   };
 
   return (
@@ -188,12 +201,12 @@ export const Layout: React.FC<ILayoutProps> = ({ children, activeTab, setActiveT
           <div className="bg-zinc-950/30 border border-zinc-900 rounded-2xl p-4 mb-4">
             <div className="flex items-center space-x-3">
               <div className="w-9 h-9 rounded-lg bg-zinc-900 border border-zinc-850 flex items-center justify-center">
-                <span className="text-emerald-400 font-bold text-xs">GA</span>
+                <span className="text-emerald-400 font-bold text-xs">{userInitials}</span>
               </div>
               <div>
                 <p className="text-[9px] text-zinc-500 font-bold uppercase tracking-wider">Field Officer</p>
-                <h3 className="text-xs font-semibold text-zinc-200">Gabriel Agila</h3>
-                <p className="text-[9px] text-zinc-550">Bukidnon Coop #12</p>
+                <h3 className="text-xs font-semibold text-zinc-200">{userName}</h3>
+                <p className="text-[9px] text-zinc-550">{coopName}</p>
               </div>
             </div>
           </div>
@@ -248,7 +261,7 @@ export const Layout: React.FC<ILayoutProps> = ({ children, activeTab, setActiveT
 
           <div className="pt-2 border-t border-zinc-900 mt-2">
             <button
-                onClick={onExit}
+                onClick={handleExit}
                 className="w-full flex items-center space-x-3 px-4 py-2.5 rounded-xl text-xs font-medium border border-emerald-900/30 bg-emerald-950/20 text-emerald-400 hover:bg-emerald-800/30 hover:text-emerald-200 transition cursor-pointer backdrop-blur-xl"
               >
                 <Home className="w-4 h-4" />
@@ -296,12 +309,12 @@ export const Layout: React.FC<ILayoutProps> = ({ children, activeTab, setActiveT
                 <div className="bg-zinc-950/50 border border-zinc-900 rounded-2xl p-4 mb-4">
                   <div className="flex items-center space-x-3">
                     <div className="w-9 h-9 rounded-lg bg-zinc-900 border border-zinc-850 flex items-center justify-center">
-                      <span className="text-emerald-400 font-bold text-xs">GA</span>
+                      <span className="text-emerald-400 font-bold text-xs">{userInitials}</span>
                     </div>
                     <div>
                       <p className="text-[9px] text-zinc-500 font-bold uppercase tracking-wider">Field Officer</p>
-                      <h3 className="text-xs font-semibold text-zinc-200">Gabriel Agila</h3>
-                      <p className="text-[9px] text-zinc-550">Bukidnon Coop #12</p>
+                      <h3 className="text-xs font-semibold text-zinc-200">{userName}</h3>
+                      <p className="text-[9px] text-zinc-550">{coopName}</p>
                     </div>
                   </div>
                 </div>
@@ -357,7 +370,7 @@ export const Layout: React.FC<ILayoutProps> = ({ children, activeTab, setActiveT
 
                 <div className="pt-2 border-t border-zinc-900 mt-2">
                   <button
-                    onClick={() => { onExit(); setIsMobileMenuOpen(false); }}
+                    onClick={() => { handleExit(); setIsMobileMenuOpen(false); }}
                     className="w-full flex items-center space-x-3 px-4 py-2.5 rounded-xl text-xs font-medium border border-emerald-900/30 bg-emerald-950/20 text-emerald-400 hover:bg-emerald-800/30 hover:text-emerald-200 transition cursor-pointer backdrop-blur-xl"
                   >
                     <Home className="w-4 h-4" />

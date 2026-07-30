@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { db } from '../db/db';
+import { useAuth } from '../context/AuthContext';
 import { 
   Lock, 
   Mail, 
@@ -9,16 +9,15 @@ import {
   CloudLightning,
   Sparkles
 } from 'lucide-react';
-import type { IUser } from '../types/database';
 
 interface ILoginProps {
-  onLoginSuccess: (user: IUser) => void;
+  onLoginSuccess: () => void;
   onBackToHome: () => void;
 }
 
 /**
  * Login Component. Displays the secure technician authentication form.
- * Handles validation against seeded local database accounts for offline grids.
+ * Handles validation against Supabase Auth for real credentials.
  * 
  * @param props Props containing success and back-navigation callbacks.
  */
@@ -27,9 +26,10 @@ export const Login: React.FC<ILoginProps> = ({ onLoginSuccess, onBackToHome }) =
   const [password, setPassword] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { signIn } = useAuth();
 
   /**
-   * Validates credentials and logs the user in.
+   * Validates credentials and logs the user in via Supabase.
    */
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,24 +41,19 @@ export const Login: React.FC<ILoginProps> = ({ onLoginSuccess, onBackToHome }) =
     setIsLoading(true);
     setError(null);
 
-    // Simulate network authentication speed
-    await new Promise(resolve => setTimeout(resolve, 1200));
-
     try {
-      const users = await db.users.toArray();
-      const matchedUser = users.find(
-        (u) => u.email.toLowerCase() === email.toLowerCase() && !u.isDeleted
-      );
+      const { error: authError } = await signIn(email, password);
 
-      // Offline credentials check (Gabriel Agila / password123)
-      if (matchedUser && password === 'password123') {
-        onLoginSuccess(matchedUser);
-      } else {
-        setError('Invalid officer email or password. Use demo credentials below.');
+      if (authError) {
+        setError('Invalid officer email or password. Check your credentials.');
+        return;
       }
+
+      // Login successful - trigger page transition
+      onLoginSuccess();
     } catch (err) {
       console.error(err);
-      setError('Local authentication engine error. Verification aborted.');
+      setError('Authentication service error. Please try again.');
     } finally {
       setIsLoading(false);
     }

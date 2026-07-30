@@ -44,10 +44,10 @@ export const SoilDial: React.FC<ISoilDialProps> = ({ value, onChange, readOnly =
   };
 
   return (
-    <div className="flex flex-col items-center p-4 bg-zinc-950/20 border border-zinc-900 rounded-2xl w-full max-w-[200px] transition-all duration-200">
+    <div className="flex flex-col items-center p-3 sm:p-4 bg-zinc-950/20 border border-zinc-900 rounded-2xl w-full max-w-[200px] transition-all duration-200">
       
       {/* SVG Dial Gauge */}
-      <div className="relative w-36 h-20 flex items-center justify-center overflow-hidden">
+      <div className="relative w-28 sm:w-36 h-16 sm:h-20 flex items-center justify-center overflow-hidden">
         <svg className="w-full h-full" viewBox="0 0 100 55">
           {/* Background Track Arc */}
           <path
@@ -101,10 +101,10 @@ export const SoilDial: React.FC<ISoilDialProps> = ({ value, onChange, readOnly =
 
         {/* Central pH Number Display */}
         <div className="absolute bottom-0 text-center">
-          <span className={`text-xl font-bold tracking-tight ${textColor}`}>
+          <span className={`text-lg sm:text-xl font-bold tracking-tight ${textColor}`}>
             {clampedValue.toFixed(1)}
           </span>
-          <span className="text-[8px] font-medium text-zinc-500 uppercase tracking-widest block mt-0.5">
+          <span className="text-[7px] sm:text-[8px] font-medium text-zinc-500 uppercase tracking-widest block mt-0.5">
             {statusText}
           </span>
         </div>
@@ -112,23 +112,23 @@ export const SoilDial: React.FC<ISoilDialProps> = ({ value, onChange, readOnly =
 
       {/* Adjustment Controllers */}
       {!readOnly && (
-        <div className="flex items-center space-x-2.5 mt-3.5">
+        <div className="flex items-center space-x-2 sm:space-x-2.5 mt-3">
           <button
             type="button"
             onClick={() => handleAdjust(-0.1)}
-            className="p-1 bg-zinc-900 hover:bg-zinc-850 text-zinc-400 hover:text-white rounded-lg border border-zinc-800 active:scale-95 transition-all cursor-pointer"
+            className="p-1.5 sm:p-2 bg-zinc-900 hover:bg-zinc-850 text-zinc-400 hover:text-white rounded-lg border border-zinc-800 active:scale-95 transition-all cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center"
             aria-label="Decrease pH"
           >
-            <Minus className="w-3.5 h-3.5" />
+            <Minus className="w-4 h-4 sm:w-3.5 sm:h-3.5" />
           </button>
-          <span className="text-[9px] font-bold uppercase tracking-wider text-zinc-500 select-none">pH</span>
+          <span className="text-[8px] sm:text-[9px] font-bold uppercase tracking-wider text-zinc-500 select-none">pH</span>
           <button
             type="button"
             onClick={() => handleAdjust(0.1)}
-            className="p-1 bg-zinc-900 hover:bg-zinc-850 text-zinc-400 hover:text-white rounded-lg border border-zinc-800 active:scale-95 transition-all cursor-pointer"
+            className="p-1.5 sm:p-2 bg-zinc-900 hover:bg-zinc-850 text-zinc-400 hover:text-white rounded-lg border border-zinc-800 active:scale-95 transition-all cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center"
             aria-label="Increase pH"
           >
-            <Plus className="w-3.5 h-3.5" />
+            <Plus className="w-4 h-4 sm:w-3.5 sm:h-3.5" />
           </button>
         </div>
       )}

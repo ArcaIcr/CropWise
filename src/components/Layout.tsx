@@ -154,39 +154,45 @@ export const Layout: React.FC<ILayoutProps> = ({ children, activeTab, setActiveT
           </div>
 
           {/* Sync & Connectivity Center */}
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-2">
             {/* Sync Button */}
             {unsyncedCount > 0 && (
               <button
                 onClick={handleSync}
                 disabled={isSyncing || !isOnline}
-                className={`flex items-center space-x-2 px-3 py-1.5 rounded-xl text-[11px] font-semibold border transition-all duration-150 ${
+                className={`flex items-center space-x-2 px-3 py-2 rounded-xl text-[11px] font-semibold border transition-all duration-150 min-h-[44px] min-w-[44px] ${
                   isOnline 
                     ? 'bg-emerald-600/90 hover:bg-emerald-600 border-emerald-500 text-white shadow-sm active:scale-95 cursor-pointer' 
                     : 'bg-zinc-900 border-zinc-800 text-zinc-500 cursor-not-allowed'
                 }`}
               >
-                <RefreshCw className={`w-3.5 h-3.5 ${isSyncing ? 'animate-spin' : ''}`} />
-                <span>{isSyncing ? 'Syncing...' : `Sync ${unsyncedCount} draft(s)`}</span>
+                <RefreshCw className={`w-4 h-4 ${isSyncing ? 'animate-spin' : ''}`} />
+                <span className="hidden sm:inline">{isSyncing ? 'Syncing...' : `Sync ${unsyncedCount} draft(s)`}</span>
+                <span className="sm:hidden" aria-label={isSyncing ? 'Syncing' : `Sync ${unsyncedCount} drafts`}>
+                  {isSyncing ? '⟳' : '☁'}
+                </span>
               </button>
             )}
 
             {/* Sync success toast indicator */}
             {showSyncSuccess && (
-              <div className="flex items-center space-x-1.5 px-3 py-1.5 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[11px] font-medium rounded-xl">
-                <CheckCircle className="w-3.5 h-3.5" />
+              <div className="flex items-center space-x-1.5 px-3 py-2 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[11px] font-medium rounded-xl min-h-[44px]">
+                <CheckCircle className="w-4 h-4" />
                 <span>Sync Complete!</span>
               </div>
             )}
 
             {/* Connectivity Status Badges */}
-            <div className={`flex items-center space-x-1.5 px-3 py-1.5 border rounded-xl text-[11px] font-medium select-none ${
+            <div className={`flex items-center space-x-1.5 px-3 py-2 border rounded-xl text-[11px] font-medium select-none min-h-[44px] ${
               isOnline 
                 ? 'bg-emerald-950/20 border-emerald-900/30 text-emerald-400' 
                 : 'bg-amber-950/20 border-amber-900/30 text-amber-400'
             }`}>
-              {isOnline ? <Wifi className="w-3.5 h-3.5" /> : <WifiOff className="w-3.5 h-3.5" />}
-              <span>{isOnline ? 'Online' : 'Offline'}</span>
+              {isOnline ? <Wifi className="w-4 h-4" /> : <WifiOff className="w-4 h-4" />}
+              <span className="hidden sm:inline">{isOnline ? 'Online' : 'Offline'}</span>
+              <span className="sm:hidden" aria-label={isOnline ? 'Online' : 'Offline'}>
+                {isOnline ? '●' : '○'}
+              </span>
             </div>
           </div>
         </div>
@@ -281,34 +287,36 @@ export const Layout: React.FC<ILayoutProps> = ({ children, activeTab, setActiveT
           </div>
         </aside>
 
-        {/* Mobile Drawer (Slide-out menu) */}
+{/* Mobile Drawer (Slide-out menu) */}
         {isMobileMenuOpen && (
           <div className="relative z-55 md:hidden">
             {/* Backdrop overlay */}
             <div 
               className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity" 
               onClick={() => setIsMobileMenuOpen(false)}
+              aria-hidden="true"
             />
             
             {/* Drawer menu panel */}
             <div className="fixed inset-y-0 left-0 flex max-w-full">
-              <div className="w-64 bg-zinc-950 border-r border-zinc-905 p-5 flex flex-col space-y-1.5 shadow-2xl relative h-full">
+              <div className="w-full max-w-xs bg-zinc-950 border-r border-zinc-905 p-5 flex flex-col space-y-1.5 shadow-2xl relative h-full overflow-y-auto">
                 
                 {/* Drawer Header with close button */}
                 <div className="flex items-center justify-between pb-4 border-b border-zinc-900 mb-4">
                   <span className="text-[10px] font-extrabold uppercase text-zinc-400 tracking-wider">Navigation Menu</span>
                   <button
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="p-1.5 rounded-lg text-zinc-500 hover:text-zinc-300 hover:bg-zinc-900 cursor-pointer"
+                    className="p-2 rounded-lg text-zinc-500 hover:text-zinc-300 hover:bg-zinc-900 cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center"
+                    aria-label="Close menu"
                   >
-                    <X className="w-4 h-4" />
+                    <X className="w-5 h-5" />
                   </button>
                 </div>
 
                 {/* Profile Card */}
                 <div className="bg-zinc-950/50 border border-zinc-900 rounded-2xl p-4 mb-4">
                   <div className="flex items-center space-x-3">
-                    <div className="w-9 h-9 rounded-lg bg-zinc-900 border border-zinc-850 flex items-center justify-center">
+                    <div className="w-10 h-10 rounded-lg bg-zinc-900 border border-zinc-850 flex items-center justify-center">
                       <span className="text-emerald-400 font-bold text-xs">{userInitials}</span>
                     </div>
                     <div>
@@ -320,60 +328,62 @@ export const Layout: React.FC<ILayoutProps> = ({ children, activeTab, setActiveT
                 </div>
 
                 {/* Menu items */}
-                <button
-                  onClick={() => { setActiveTab('registry'); setIsMobileMenuOpen(false); }}
-                  className={`flex items-center space-x-3 px-4 py-2.5 rounded-xl text-xs font-medium border transition-all duration-150 cursor-pointer ${
-                    activeTab === 'registry'
-                      ? 'bg-emerald-950/30 border-emerald-900/30 text-emerald-400'
-                      : 'border-transparent text-zinc-400 hover:bg-zinc-900/20 hover:text-zinc-200'
-                  }`}
-                >
-                  <Users className="w-4 h-4" />
-                  <span>Farmer Registry</span>
-                </button>
+                <nav className="space-y-1" role="navigation" aria-label="Main navigation">
+                  <button
+                    onClick={() => { setActiveTab('registry'); setIsMobileMenuOpen(false); }}
+                    className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-medium border transition-all duration-150 cursor-pointer min-h-[48px] ${
+                      activeTab === 'registry'
+                        ? 'bg-emerald-950/30 border-emerald-900/30 text-emerald-400'
+                        : 'border-transparent text-zinc-400 hover:bg-zinc-900/20 hover:text-zinc-200'
+                    }`}
+                  >
+                    <Users className="w-5 h-5 flex-shrink-0" />
+                    <span>Farmer Registry</span>
+                  </button>
 
-                <button
-                  onClick={() => { setActiveTab('test'); setIsMobileMenuOpen(false); }}
-                  className={`flex items-center space-x-3 px-4 py-2.5 rounded-xl text-xs font-medium border transition-all duration-150 cursor-pointer ${
-                    activeTab === 'test'
-                      ? 'bg-emerald-950/30 border-emerald-900/30 text-emerald-400'
-                      : 'border-transparent text-zinc-400 hover:bg-zinc-900/20 hover:text-zinc-200'
-                  }`}
-                >
-                  <PlusCircle className="w-4 h-4" />
-                  <span>New Soil Test</span>
-                </button>
+                  <button
+                    onClick={() => { setActiveTab('test'); setIsMobileMenuOpen(false); }}
+                    className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-medium border transition-all duration-150 cursor-pointer min-h-[48px] ${
+                      activeTab === 'test'
+                        ? 'bg-emerald-950/30 border-emerald-900/30 text-emerald-400'
+                        : 'border-transparent text-zinc-400 hover:bg-zinc-900/20 hover:text-zinc-200'
+                    }`}
+                  >
+                    <PlusCircle className="w-5 h-5 flex-shrink-0" />
+                    <span>New Soil Test</span>
+                  </button>
 
-                <button
-                  onClick={() => { setActiveTab('reports'); setIsMobileMenuOpen(false); }}
-                  className={`flex items-center space-x-3 px-4 py-2.5 rounded-xl text-xs font-medium border transition-all duration-150 cursor-pointer ${
-                    activeTab === 'reports'
-                      ? 'bg-emerald-950/30 border-emerald-900/30 text-emerald-400'
-                      : 'border-transparent text-zinc-400 hover:bg-zinc-900/20 hover:text-zinc-200'
-                  }`}
-                >
-                  <ClipboardList className="w-4 h-4" />
-                  <span>Soil Reports</span>
-                </button>
+                  <button
+                    onClick={() => { setActiveTab('reports'); setIsMobileMenuOpen(false); }}
+                    className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-medium border transition-all duration-150 cursor-pointer min-h-[48px] ${
+                      activeTab === 'reports'
+                        ? 'bg-emerald-950/30 border-emerald-900/30 text-emerald-400'
+                        : 'border-transparent text-zinc-400 hover:bg-zinc-900/20 hover:text-zinc-200'
+                    }`}
+                  >
+                    <ClipboardList className="w-5 h-5 flex-shrink-0" />
+                    <span>Soil Reports</span>
+                  </button>
 
-                <button
-                  onClick={() => { setActiveTab('advisor'); setIsMobileMenuOpen(false); }}
-                  className={`flex items-center space-x-3 px-4 py-2.5 rounded-xl text-xs font-medium border transition-all duration-150 cursor-pointer ${
-                    activeTab === 'advisor'
-                      ? 'bg-emerald-950/30 border-emerald-900/30 text-emerald-400'
-                      : 'border-transparent text-zinc-400 hover:bg-zinc-900/20 hover:text-zinc-200'
-                  }`}
-                >
-                  <Sparkles className="w-4 h-4" />
-                  <span>Crop Advisor</span>
-                </button>
+                  <button
+                    onClick={() => { setActiveTab('advisor'); setIsMobileMenuOpen(false); }}
+                    className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-medium border transition-all duration-150 cursor-pointer min-h-[48px] ${
+                      activeTab === 'advisor'
+                        ? 'bg-emerald-950/30 border-emerald-900/30 text-emerald-400'
+                        : 'border-transparent text-zinc-400 hover:bg-zinc-900/20 hover:text-zinc-200'
+                    }`}
+                  >
+                    <Sparkles className="w-5 h-5 flex-shrink-0" />
+                    <span>Crop Advisor</span>
+                  </button>
+                </nav>
 
                 <div className="pt-2 border-t border-zinc-900 mt-2">
                   <button
                     onClick={() => { handleExit(); setIsMobileMenuOpen(false); }}
-                    className="w-full flex items-center space-x-3 px-4 py-2.5 rounded-xl text-xs font-medium border border-emerald-900/30 bg-emerald-950/20 text-emerald-400 hover:bg-emerald-800/30 hover:text-emerald-200 transition cursor-pointer backdrop-blur-xl"
+                    className="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-medium border border-emerald-900/30 bg-emerald-950/20 text-emerald-400 hover:bg-emerald-800/30 hover:text-emerald-200 transition cursor-pointer min-h-[48px]"
                   >
-                    <Home className="w-4 h-4" />
+                    <Home className="w-5 h-5 flex-shrink-0" />
                     <span>Exit to Homepage</span>
                   </button>
                 </div>

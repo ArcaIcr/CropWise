@@ -187,7 +187,7 @@ export const ReportGenerator: React.FC<IReportGeneratorProps> = ({
   const selectedDetails = selectedReportDetails;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* Printable CSS inject */}
       <style>{`
         @media print {
@@ -231,23 +231,23 @@ export const ReportGenerator: React.FC<IReportGeneratorProps> = ({
         }
       `}</style>
 
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/5 pb-4 no-print">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 border-b border-white/5 pb-3 sm:pb-4 no-print">
         <div>
-          <h2 className="text-xl font-bold text-slate-100 m-0">Soil Diagnosis Reports</h2>
-          <p className="text-slate-400 text-xs mt-1">Review, translate, and print fertilizer reports generated in the field.</p>
+          <h2 className="text-lg sm:text-xl font-bold text-slate-100 m-0">Soil Diagnosis Reports</h2>
+          <p className="text-slate-400 text-[10px] sm:text-xs mt-1">Review, translate, and print fertilizer reports generated in the field.</p>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
         
         {/* Left: History List */}
-        <div className="lg:col-span-1 space-y-4 no-print">
-          <h4 className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Report Archive</h4>
+        <div className="lg:col-span-1 space-y-3 sm:space-y-4 no-print">
+          <h4 className="text-[9px] sm:text-[10px] font-bold uppercase tracking-wider text-slate-500">Report Archive</h4>
           
-          <div className="bg-slate-950/20 border border-white/5 rounded-2xl overflow-hidden max-h-[440px] overflow-y-auto divide-y divide-white/5">
+          <div className="bg-slate-950/20 border border-white/5 rounded-2xl overflow-hidden max-h-[50vh] overflow-y-auto divide-y divide-white/5">
             {!reports || reports.length === 0 ? (
-              <div className="p-8 text-center text-slate-500 text-xs space-y-2">
-                <FileText className="w-7 h-7 text-slate-700 mx-auto" />
+              <div className="p-6 sm:p-8 text-center text-slate-500 text-xs sm:text-sm space-y-2">
+                <FileText className="w-7 h-7 sm:w-8 sm:h-8 text-slate-700 mx-auto" />
                 <p>No reports generated yet.</p>
               </div>
             ) : (
@@ -255,28 +255,28 @@ export const ReportGenerator: React.FC<IReportGeneratorProps> = ({
                 const dateStr = new Date(rep.generatedAt).toLocaleDateString();
                 
                 return (
-                  <div
+                  <button
                     key={rep.id}
                     onClick={() => {
                       setSelectedReportId(rep.id);
                       setLang('en');
                     }}
-                    className={`p-4 transition cursor-pointer flex flex-col space-y-1.5 ${
+                    className={`w-full p-3 sm:p-4 transition cursor-pointer flex flex-col space-y-1.5 text-left ${
                       selectedReportId === rep.id
                         ? 'bg-emerald-600/10 border-l-4 border-emerald-500'
                         : 'hover:bg-slate-800/15'
                     }`}
                   >
                     <div className="flex items-center justify-between">
-                      <span className="font-semibold text-xs text-slate-200">
+                      <span className="font-semibold text-xs sm:text-sm text-slate-200">
                         ID: #{rep.id.substring(0, 8).toUpperCase()}
                       </span>
-                      <span className="text-[10px] text-slate-500">{dateStr}</span>
+                      <span className="text-[9px] sm:text-[10px] text-slate-500 whitespace-nowrap">{dateStr}</span>
                     </div>
-                    <p className="text-[10px] text-slate-450">
+                    <p className="text-[9px] sm:text-[10px] text-slate-450">
                       Total fertilizer needed: <span className="text-slate-200 font-bold">{rep.fertilizerTotalKg} kg</span>
                     </p>
-                  </div>
+                  </button>
                 );
               })
             )}
@@ -286,41 +286,41 @@ export const ReportGenerator: React.FC<IReportGeneratorProps> = ({
         {/* Right: Detailed View */}
         <div className="lg:col-span-2">
           {selectedDetails ? (
-            <div className="space-y-6">
+            <div className="space-y-4 sm:space-y-6">
               
               {/* Detailed Actions Controls */}
-              <div className="flex items-center justify-between bg-slate-900/50 backdrop-blur-md border border-white/5 p-3 rounded-2xl no-print">
-                <div className="flex items-center space-x-1 bg-slate-950 border border-white/5 p-0.5 rounded-xl text-[10px]">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-900/50 backdrop-blur-md border border-white/5 p-3 rounded-2xl no-print">
+                <div className="flex items-center space-x-1 bg-slate-950 border border-white/5 p-0.5 rounded-xl text-[9px] sm:text-[10px] flex-wrap">
                   <button
                     onClick={() => setLang('en')}
-                    className={`px-3 py-1.5 rounded-lg font-bold uppercase tracking-wider flex items-center space-x-1 transition cursor-pointer ${
+                    className={`px-3 py-2 rounded-lg font-bold uppercase tracking-wider flex items-center space-x-1 transition cursor-pointer min-h-[44px] min-w-[44px] ${
                       lang === 'en' ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-400 hover:text-slate-200'
                     }`}
                   >
-                    <Globe className="w-3.5 h-3.5" />
+                    <Globe className="w-4 h-4" />
                     <span>EN</span>
                   </button>
                   <button
                     onClick={() => setLang('tl')}
-                    className={`px-3 py-1.5 rounded-lg font-bold uppercase tracking-wider flex items-center space-x-1 transition cursor-pointer ${
+                    className={`px-3 py-2 rounded-lg font-bold uppercase tracking-wider flex items-center space-x-1 transition cursor-pointer min-h-[44px] min-w-[44px] ${
                       lang === 'tl' ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-400 hover:text-slate-200'
                     }`}
                   >
-                    <Globe className="w-3.5 h-3.5" />
+                    <Globe className="w-4 h-4" />
                     <span>Tagalog</span>
                   </button>
                   <button
                     onClick={() => setLang('ceb')}
-                    className={`px-3 py-1.5 rounded-lg font-bold uppercase tracking-wider flex items-center space-x-1 transition cursor-pointer ${
+                    className={`px-3 py-2 rounded-lg font-bold uppercase tracking-wider flex items-center space-x-1 transition cursor-pointer min-h-[44px] min-w-[44px] ${
                       lang === 'ceb' ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-400 hover:text-slate-200'
                     }`}
                   >
-                    <Globe className="w-3.5 h-3.5" />
+                    <Globe className="w-4 h-4" />
                     <span>Cebuano</span>
                   </button>
                 </div>
 
-                <div className="flex space-x-2">
+                <div className="flex flex-wrap items-center space-x-2">
                   {(() => {
                     const farmer = selectedDetails?.farmer;
                     const plot = selectedDetails?.plot;
@@ -328,9 +328,9 @@ export const ReportGenerator: React.FC<IReportGeneratorProps> = ({
                       return (
                         <button
                           onClick={() => onViewInAdvisor(farmer.id, plot.id)}
-                          className="flex items-center space-x-1 bg-slate-850 hover:bg-slate-850/80 text-zinc-200 border border-white/5 font-semibold text-xs px-3.5 py-2 rounded-xl transition cursor-pointer active:scale-95"
+                          className="flex items-center space-x-1 bg-slate-850 hover:bg-slate-850/80 text-zinc-200 border border-white/5 font-semibold text-xs px-3.5 py-2 rounded-xl transition cursor-pointer active:scale-95 min-h-[44px]"
                         >
-                          <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
+                          <Sparkles className="w-4 h-4 text-emerald-400" />
                           <span>Open in Advisor</span>
                         </button>
                       );
@@ -339,16 +339,16 @@ export const ReportGenerator: React.FC<IReportGeneratorProps> = ({
                   })()}
                   <button
                     onClick={() => setShowShareModal(true)}
-                    className="flex items-center space-x-1 bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-xs px-3.5 py-2 rounded-xl transition cursor-pointer active:scale-95"
+                    className="flex items-center space-x-1 bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-xs px-3.5 py-2 rounded-xl transition cursor-pointer active:scale-95 min-h-[44px]"
                   >
-                    <Share2 className="w-3.5 h-3.5" />
+                    <Share2 className="w-4 h-4" />
                     <span>Share SMS</span>
                   </button>
                   <button
                     onClick={handlePrint}
-                    className="flex items-center space-x-1 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs px-3.5 py-2 rounded-xl transition cursor-pointer active:scale-95 shadow-sm hover:scale-[1.01]"
+                    className="flex items-center space-x-1 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs px-3.5 py-2 rounded-xl transition cursor-pointer active:scale-95 shadow-sm hover:scale-[1.01] min-h-[44px]"
                   >
-                    <Printer className="w-3.5 h-3.5" />
+                    <Printer className="w-4 h-4" />
                     <span>Print Plan</span>
                   </button>
                 </div>
@@ -364,11 +364,11 @@ export const ReportGenerator: React.FC<IReportGeneratorProps> = ({
               />
             </div>
           ) : (
-            <div className="bg-slate-900/10 border border-slate-800/80 rounded-3xl p-16 text-center text-slate-500 text-xs flex flex-col items-center justify-center space-y-3 min-h-[300px]">
-              <FileText className="w-10 h-10 text-slate-700" />
+            <div className="bg-slate-900/10 border border-slate-800/80 rounded-3xl p-6 sm:p-16 text-center text-slate-500 text-xs sm:text-sm flex flex-col items-center justify-center space-y-3 min-h-[300px]">
+              <FileText className="w-8 h-8 sm:w-10 sm:h-10 text-slate-700" />
               <div>
-                <p className="font-bold text-slate-400 uppercase tracking-wider text-[10px]">No Report Selected</p>
-                <p className="text-[11px] mt-1 text-slate-600">Select a generated report from the history list, or log a new soil test to create one.</p>
+                <p className="font-bold text-slate-400 uppercase tracking-wider text-[9px] sm:text-[10px]">No Report Selected</p>
+                <p className="text-[10px] sm:text-[11px] mt-1 text-slate-600 px-4">Select a generated report from the history list, or log a new soil test to create one.</p>
               </div>
             </div>
           )}

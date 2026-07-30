@@ -84,13 +84,13 @@ export const NutrientWell: React.FC<INutrientWellProps> = ({
   };
 
   return (
-    <div className="flex flex-col items-center p-4 bg-zinc-950/20 border border-zinc-900 rounded-2xl w-full max-w-[150px] transition-all duration-200">
-      <span className="text-[9px] font-bold text-zinc-400 uppercase tracking-widest mb-3.5 select-none">{label}</span>
+    <div className="flex flex-col items-center p-3 sm:p-4 bg-zinc-950/20 border border-zinc-900 rounded-2xl w-full max-w-[150px] transition-all duration-200">
+      <span className="text-[8px] sm:text-[9px] font-bold text-zinc-400 uppercase tracking-widest mb-3 select-none">{label}</span>
       
       {/* Precision Glass Graduated Cylinder */}
       <div 
         onClick={handleVialClick}
-        className="w-10 h-32 bg-zinc-950 border border-zinc-800 rounded-xl relative overflow-hidden flex flex-col justify-end shadow-inner cursor-ns-resize"
+        className="w-8 sm:w-10 h-24 sm:h-32 bg-zinc-950 border border-zinc-800 rounded-xl relative overflow-hidden flex flex-col justify-end shadow-inner cursor-ns-resize min-h-[44px]"
       >
         {/* Fill Level */}
         <div 
@@ -99,7 +99,7 @@ export const NutrientWell: React.FC<INutrientWellProps> = ({
         />
 
         {/* Measuring Ticks */}
-        <div className="absolute inset-y-3 right-1.5 flex flex-col justify-between pointer-events-none text-[7px] font-mono text-zinc-700 select-none">
+        <div className="absolute inset-y-2 right-1.5 flex flex-col justify-between pointer-events-none text-[6px] sm:text-[7px] font-mono text-zinc-700 select-none">
           <span>— Max</span>
           <span>— Mid</span>
           <span>— Min</span>
@@ -107,33 +107,33 @@ export const NutrientWell: React.FC<INutrientWellProps> = ({
       </div>
 
       {/* Numerical Value display */}
-      <div className="text-center mt-3.5 space-y-1 w-full">
-        <span className="text-xs font-bold text-zinc-100 block">
-          {value} <span className="text-[9px] text-zinc-500 font-normal">{unit}</span>
+      <div className="text-center mt-3 space-y-1 w-full">
+        <span className="text-sm sm:text-xs font-bold text-zinc-100 block">
+          {value} <span className="text-[8px] sm:text-[9px] text-zinc-500 font-normal">{unit}</span>
         </span>
-        <span className={`text-[8px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border block ${statusTextClass}`}>
+        <span className={`text-[7px] sm:text-[8px] font-bold uppercase tracking-wider px-2 py-1 rounded-full border block ${statusTextClass}`}>
           {statusLabel}
         </span>
       </div>
 
       {/* Adjustment Buttons */}
       {!readOnly && (
-        <div className="flex items-center space-x-1.5 mt-3">
+        <div className="flex items-center space-x-1.5 sm:space-x-2 mt-3">
           <button
             type="button"
             onClick={() => handleAdjust(-5)}
-            className="p-1 bg-zinc-900 hover:bg-zinc-850 text-zinc-500 hover:text-white rounded-lg border border-zinc-800 active:scale-95 transition-all cursor-pointer"
+            className="p-1.5 sm:p-2 bg-zinc-900 hover:bg-zinc-850 text-zinc-500 hover:text-white rounded-lg border border-zinc-800 active:scale-95 transition-all cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center"
             aria-label={`Decrease ${label}`}
           >
-            <Minus className="w-3 h-3" />
+            <Minus className="w-3.5 h-3.5 sm:w-3 sm:h-3" />
           </button>
           <button
             type="button"
             onClick={() => handleAdjust(5)}
-            className="p-1 bg-zinc-900 hover:bg-zinc-850 text-zinc-500 hover:text-white rounded-lg border border-zinc-800 active:scale-95 transition-all cursor-pointer"
+            className="p-1.5 sm:p-2 bg-zinc-900 hover:bg-zinc-850 text-zinc-500 hover:text-white rounded-lg border border-zinc-800 active:scale-95 transition-all cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center"
             aria-label={`Increase ${label}`}
           >
-            <Plus className="w-3 h-3" />
+            <Plus className="w-3.5 h-3.5 sm:w-3 sm:h-3" />
           </button>
         </div>
       )}

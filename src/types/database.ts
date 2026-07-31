@@ -39,6 +39,8 @@ export interface IFarmer {
   phone: string;
   barangay: string;
   notes?: string;
+  supabaseUserId?: string;
+  passwordHash?: string;
   createdAt: number;
   updatedAt: number;
   isDeleted: boolean;

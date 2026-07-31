@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 interface IAddFarmerFormProps {
-  onSubmit: (farmerData: { name: string; phone: string; barangay: string; notes?: string }) => void;
+  onSubmit: (farmerData: { name: string; phone: string; barangay: string; notes?: string; password: string }) => void;
   onCancel: () => void;
 }
 
@@ -16,15 +16,17 @@ export const AddFarmerForm: React.FC<IAddFarmerFormProps> = ({ onSubmit, onCance
   const [phone, setPhone] = useState<string>('');
   const [barangay, setBarangay] = useState<string>('');
   const [notes, setNotes] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name || !phone || !barangay) return;
+    if (!name || !phone || !barangay || !password) return;
     onSubmit({
       name,
       phone,
       barangay,
-      notes: notes || undefined
+      notes: notes || undefined,
+      password
     });
   };
 
@@ -68,6 +70,19 @@ export const AddFarmerForm: React.FC<IAddFarmerFormProps> = ({ onSubmit, onCance
             value={barangay}
             onChange={e => setBarangay(e.target.value)}
             placeholder="e.g. Sumpong"
+            className="w-full bg-slate-950 border border-white/5 focus:border-emerald-500/30 focus:ring-1 focus:ring-emerald-500/20 rounded-xl px-3.5 py-3 text-xs sm:text-sm text-slate-100 placeholder-slate-600 outline-none transition-all min-h-[44px]"
+          />
+        </div>
+
+        {/* Password */}
+        <div className="space-y-1.5">
+          <label className="text-[9px] sm:text-[10px] text-slate-400 font-semibold uppercase tracking-wider">Password *</label>
+          <input
+            type="password"
+            required
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+            placeholder="Set farmer password"
             className="w-full bg-slate-950 border border-white/5 focus:border-emerald-500/30 focus:ring-1 focus:ring-emerald-500/20 rounded-xl px-3.5 py-3 text-xs sm:text-sm text-slate-100 placeholder-slate-600 outline-none transition-all min-h-[44px]"
           />
         </div>

@@ -284,6 +284,7 @@ db.on('populate', () => {
     phone: '0917-234-5678',
     barangay: 'Gusa',
     notes: 'A dedicated farmer aiming for organic vegetable rotation.',
+    passwordHash: btoa('farmer123'),
     createdAt: Date.now(),
     updatedAt: Date.now(),
     isDeleted: false

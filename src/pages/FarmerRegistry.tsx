@@ -49,9 +49,13 @@ export const FarmerRegistry: React.FC = () => {
   /**
    * Submits the farmer registration form.
    */
-  const handleFarmerSubmit = async (farmerData: { name: string; phone: string; barangay: string; notes?: string }) => {
+  const handleFarmerSubmit = async (farmerData: { name: string; phone: string; barangay: string; notes?: string; password?: string }) => {
     if (!user) return;
     try {
+      // Generate a simple password hash (in production, use bcrypt)
+      const password = farmerData.password || 'farmer123';
+      const passwordHash = btoa(password); // Simple encoding for demo
+
       const newFarmer: IFarmer = {
         id: crypto.randomUUID(),
         cooperativeId: user.cooperativeId,
@@ -59,6 +63,7 @@ export const FarmerRegistry: React.FC = () => {
         phone: farmerData.phone,
         barangay: farmerData.barangay,
         notes: farmerData.notes,
+        passwordHash,
         createdAt: Date.now(),
         updatedAt: Date.now(),
         isDeleted: false

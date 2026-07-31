@@ -5,7 +5,8 @@ import {
   Wifi, 
   FileText, 
   Smartphone,
-  Flame
+  Flame,
+  Leaf
 } from 'lucide-react';
 import { generateRecommendation } from '../services/recommendations';
 import type { IRecommendationRule, ISoilReading } from '../types/database';
@@ -13,7 +14,7 @@ import { SoilDial } from '../components/SoilDial';
 import { NutrientWell } from '../components/NutrientWell';
 
 interface ILandingPageProps {
-  onLaunch: () => void;
+  onLaunch: (target?: 'login' | 'farmer') => void;
 }
 
 // Static fallback rules for Corn in Northern Mindanao for the interactive hero simulator
@@ -166,7 +167,7 @@ export const LandingPage: React.FC<ILandingPageProps> = ({ onLaunch }) => {
             <a href="#how-it-works" className="text-xs text-zinc-400 hover:text-zinc-200 transition font-medium hidden sm:inline-block">How it works</a>
             <a href="#features" className="text-xs text-zinc-400 hover:text-zinc-200 transition font-medium hidden sm:inline-block">System Features</a>
             <button
-                onClick={onLaunch}
+                onClick={() => onLaunch('login')}
                 className="flex items-center space-x-2 bg-emerald-950/30 border border-emerald-900/30 text-emerald-400 hover:bg-emerald-800/30 backdrop-blur-xl rounded-xl px-4 py-2.5 text-xs font-semibold transition shadow-lg hover:scale-[1.02] active:scale-95 cursor-pointer"
               >
                 <span>Launch Field Portal</span>
@@ -195,11 +196,18 @@ export const LandingPage: React.FC<ILandingPageProps> = ({ onLaunch }) => {
 
           <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
             <button
-              onClick={onLaunch}
+              onClick={() => onLaunch('login')}
               className="flex items-center space-x-2 bg-emerald-600/90 hover:bg-emerald-600 text-white font-semibold text-xs px-5 py-3 rounded-xl transition-all shadow-sm hover:scale-[1.01] active:scale-95 cursor-pointer"
             >
               <span>Launch Officer Dashboard</span>
               <ArrowRight className="w-4 h-4 ml-1" />
+            </button>
+            <button
+              onClick={() => onLaunch('farmer')}
+              className="flex items-center space-x-2 border border-emerald-600 bg-transparent text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 font-semibold text-xs px-5 py-3 rounded-xl transition active:scale-95 cursor-pointer"
+            >
+              <Leaf className="w-4 h-4" />
+              <span>Farmer Portal</span>
             </button>
             <a 
               href="#how-it-works"
@@ -451,7 +459,7 @@ export const LandingPage: React.FC<ILandingPageProps> = ({ onLaunch }) => {
           <h2 className="text-2xl font-bold text-white">Empower Your Cooperative Technicians Today</h2>
           <p className="text-zinc-400 text-xs max-w-lg mx-auto">Provide auditable, custom soil diagnosis reports that reduce input costs and maximize crop yields.</p>
           <button
-            onClick={onLaunch}
+            onClick={() => onLaunch('login')}
             className="inline-flex items-center space-x-2 bg-emerald-600/90 hover:bg-emerald-600 text-white font-bold text-xs px-5 py-3 rounded-xl transition shadow-sm hover:scale-[1.01] active:scale-95 cursor-pointer"
           >
             <span>Launch Technician Dashboard</span>

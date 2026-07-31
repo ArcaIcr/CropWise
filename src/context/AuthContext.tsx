@@ -18,7 +18,7 @@ interface ICooperative {
 
 interface IAuthUser extends User {
   cooperativeId: string;
-  role: 'admin' | 'coop_officer' | 'field_technician' | 'viewer';
+  role: 'admin' | 'coop_officer' | 'field_technician' | 'viewer' | 'farmer';
   cooperative?: ICooperative;
 }
 
@@ -39,6 +39,27 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const initAuth = async () => {
+      // Check for farmer session first
+      const farmerSession = localStorage.getItem('farmer_session');
+      if (farmerSession) {
+        try {
+          const farmerUser = JSON.parse(farmerSession);
+          if (farmerUser.id && farmerUser.role === 'farmer') {
+            const mockUser = {
+              ...farmerUser,
+              app_metadata: {},
+              aud: '',
+              created_at: new Date().toISOString()
+            };
+            setUser(mockUser);
+            setLoading(false);
+            return;
+          }
+        } catch (e) {
+          localStorage.removeItem('farmer_session');
+        }
+      }
+
       const { data: { session } } = await supabase.auth.getSession();
       setSession(session);
       if (session?.user) {
@@ -55,7 +76,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         if (session?.user) {
           await fetchUserProfile(session.user);
         } else {
-          setUser(null);
+          // If there is an active local farmer session, do not clear it
+          const isFarmer = localStorage.getItem('farmer_session') !== null;
+          if (!isFarmer) {
+            setUser(null);
+          }
         }
         setLoading(false);
       }
@@ -107,6 +132,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signOut = async () => {
     await supabase.auth.signOut();
+    localStorage.removeItem('farmer_session');
     setUser(null);
     setSession(null);
   };

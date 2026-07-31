@@ -25,20 +25,27 @@ function LoadingFallback() {
 }
 
 function AppContent() {
-  const { user, loading } = useAuth();
+  const { user, loading, signOut } = useAuth();
   const [page, setPage] = useState<'home' | 'login' | 'app' | 'farmer'>('home');
   const [activeTab, setActiveTab] = useState<'registry' | 'test' | 'reports' | 'advisor'>('registry');
   const [selectedReportId, setSelectedReportId] = useState<string | null>(null);
   const [selectedFarmerId, setSelectedFarmerId] = useState<string>('farmer-juan-santos');
   const [selectedPlotId, setSelectedPlotId] = useState<string>('plot-kalinawan');
 
-  // Sync page state with farmer session
+  // Sync page state with active session
   useEffect(() => {
-    if (!loading && user?.role === 'farmer' && page === 'home') {
-      setPage('farmer');
-    }
-    if (!loading && user && user.role !== 'farmer' && page === 'farmer') {
-      setPage('home');
+    if (!loading) {
+      if (user) {
+        if (user.role === 'farmer' && page === 'home') {
+          setPage('farmer');
+        } else if (user.role !== 'farmer') {
+          if (page === 'home' || page === 'login') {
+            setPage('app');
+          } else if (page === 'farmer') {
+            setPage('home');
+          }
+        }
+      }
     }
   }, [user, loading, page]);
 
@@ -56,7 +63,6 @@ function AppContent() {
   };
 
   const handleLogOut = async () => {
-    const { signOut } = useAuth();
     await signOut();
     setPage('home');
   };

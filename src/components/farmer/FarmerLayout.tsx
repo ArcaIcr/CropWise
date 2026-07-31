@@ -129,7 +129,7 @@ export function FarmerLayout({ children, title, menuItems }: IFarmerLayoutProps)
               <button
                 key={index}
                 onClick={item.onClick}
-                className="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-semibold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-150 dark:hover:bg-zinc-850 cursor-pointer transition text-left"
+                className="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-semibold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 cursor-pointer transition text-left"
               >
                 <span className="text-zinc-500 dark:text-zinc-400">{item.icon}</span>
                 <span>{item.label}</span>
@@ -140,7 +140,7 @@ export function FarmerLayout({ children, title, menuItems }: IFarmerLayoutProps)
           <div className="pt-2 border-t border-zinc-200 dark:border-zinc-800 mt-2">
             <button
               onClick={handleLogout}
-              className="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-semibold text-red-600 hover:bg-red-50 dark:hover:bg-red-905/20 cursor-pointer transition text-left"
+              className="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-semibold text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 cursor-pointer transition text-left"
             >
               <LogOut className="w-4 h-4" />
               <span>Logout</span>

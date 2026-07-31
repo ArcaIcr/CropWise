@@ -400,7 +400,7 @@ export const FarmerAdvisorView: React.FC = () => {
                     }`}
                   >
                     <div>
-                      <h4 className="text-xs font-bold text-zinc-850 dark:text-zinc-200">{plot.plotName}</h4>
+                      <h4 className="text-xs font-bold text-zinc-800 dark:text-zinc-200">{plot.plotName}</h4>
                       <p className="text-[9px] text-zinc-500 mt-0.5">{plot.areaHectares} ha • {plot.crop}</p>
                     </div>
                     {isSelected && (
@@ -421,7 +421,7 @@ export const FarmerAdvisorView: React.FC = () => {
             
             {/* Soil Health */}
             <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-sm rounded-2xl p-4 sm:p-5 space-y-4">
-              <div className="flex items-center justify-between border-b border-zinc-150 dark:border-zinc-800 pb-3">
+              <div className="flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800 pb-3">
                 <div className="flex items-center space-x-2">
                   <Activity className="w-4 h-4 text-[#60993E]" />
                   <span className="text-xs font-bold text-zinc-800 dark:text-zinc-200">Soil Metrics</span>
@@ -452,25 +452,25 @@ export const FarmerAdvisorView: React.FC = () => {
               ) : (
                 <div className="space-y-3">
                   <div className="grid grid-cols-2 gap-3 text-xs">
-                    <div className="bg-zinc-50 dark:bg-zinc-950 p-3 rounded-xl border border-zinc-200/50 dark:border-zinc-850">
+                    <div className="bg-zinc-50 dark:bg-zinc-950 p-3 rounded-xl border border-zinc-200/50 dark:border-zinc-800">
                       <span className="text-[9px] text-zinc-400 font-bold uppercase tracking-wider block">Acidity (pH)</span>
                       <span className="text-base font-extrabold text-zinc-800 dark:text-zinc-200 mt-1 block">{latestReading.ph} pH</span>
                     </div>
-                    <div className="bg-zinc-50 dark:bg-zinc-950 p-3 rounded-xl border border-zinc-200/50 dark:border-zinc-850">
+                    <div className="bg-zinc-50 dark:bg-zinc-950 p-3 rounded-xl border border-zinc-200/50 dark:border-zinc-800">
                       <span className="text-[9px] text-zinc-400 font-bold uppercase tracking-wider block">Nitrogen (N)</span>
                       <span className="text-base font-extrabold text-zinc-800 dark:text-zinc-200 mt-1 block">{latestReading.nitrogen} ppm</span>
                     </div>
-                    <div className="bg-zinc-50 dark:bg-zinc-950 p-3 rounded-xl border border-zinc-200/50 dark:border-zinc-850">
+                    <div className="bg-zinc-50 dark:bg-zinc-950 p-3 rounded-xl border border-zinc-200/50 dark:border-zinc-800">
                       <span className="text-[9px] text-zinc-400 font-bold uppercase tracking-wider block">Phosphorus (P)</span>
                       <span className="text-base font-extrabold text-zinc-800 dark:text-zinc-200 mt-1 block">{latestReading.phosphorus} ppm</span>
                     </div>
-                    <div className="bg-zinc-50 dark:bg-zinc-950 p-3 rounded-xl border border-zinc-200/50 dark:border-zinc-850">
+                    <div className="bg-zinc-50 dark:bg-zinc-950 p-3 rounded-xl border border-zinc-200/50 dark:border-zinc-800">
                       <span className="text-[9px] text-zinc-400 font-bold uppercase tracking-wider block">Potassium (K)</span>
                       <span className="text-base font-extrabold text-zinc-800 dark:text-zinc-200 mt-1 block">{latestReading.potassium} ppm</span>
                     </div>
                   </div>
 
-                  <div className="bg-gradient-to-tr from-zinc-50 to-zinc-100 dark:from-zinc-950 dark:to-zinc-900 border border-zinc-200/50 dark:border-zinc-850 p-3.5 rounded-xl text-[10px] text-zinc-600 dark:text-zinc-450 leading-relaxed flex gap-2">
+                  <div className="bg-gradient-to-tr from-zinc-50 to-zinc-100 dark:from-zinc-950 dark:to-zinc-900 border border-zinc-200/50 dark:border-zinc-800 p-3.5 rounded-xl text-[10px] text-zinc-600 dark:text-zinc-400 leading-relaxed flex gap-2">
                     <Info className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
                     <p>{getSoilSummary(latestReading)}</p>
                   </div>
@@ -480,16 +480,16 @@ export const FarmerAdvisorView: React.FC = () => {
 
             {/* Weather Forecast */}
             <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-sm rounded-2xl p-4 sm:p-5 space-y-4">
-              <div className="flex items-center space-x-2 border-b border-zinc-150 dark:border-zinc-800 pb-3">
+              <div className="flex items-center space-x-2 border-b border-zinc-200 dark:border-zinc-800 pb-3">
                 <CloudSun className="w-4 h-4 text-amber-500" />
                 <span className="text-xs font-bold text-zinc-800 dark:text-zinc-200">Weather Forecast</span>
               </div>
 
-              <div className="bg-zinc-50 dark:bg-zinc-950 p-4 rounded-xl border border-zinc-200/50 dark:border-zinc-850 text-center space-y-3">
+              <div className="bg-zinc-50 dark:bg-zinc-950 p-4 rounded-xl border border-zinc-200/50 dark:border-zinc-800 text-center space-y-3">
                 <div className="flex justify-center items-center gap-3">
                   <CloudSun className="w-8 h-8 text-amber-500 animate-pulse" />
                   <div className="text-left">
-                    <h4 className="text-sm font-extrabold text-zinc-800 dark:text-zinc-250 leading-none">32°C / 24°C</h4>
+                    <h4 className="text-sm font-extrabold text-zinc-800 dark:text-zinc-200 leading-none">32°C / 24°C</h4>
                     <p className="text-[10px] text-zinc-500 mt-1">Partly Cloudy Conditions</p>
                   </div>
                 </div>
@@ -497,39 +497,39 @@ export const FarmerAdvisorView: React.FC = () => {
                 <div className="grid grid-cols-3 gap-2 border-t border-zinc-200/40 dark:border-zinc-800 pt-2.5 mt-2.5 text-center text-[10px]">
                   <div>
                     <span className="text-zinc-400 block">Humidity</span>
-                    <span className="font-bold text-zinc-700 dark:text-zinc-350">68%</span>
+                    <span className="font-bold text-zinc-700 dark:text-zinc-300">68%</span>
                   </div>
                   <div className="border-x border-zinc-200/40 dark:border-zinc-800">
                     <span className="text-zinc-400 block">Rainfall</span>
-                    <span className="font-bold text-zinc-700 dark:text-zinc-350">0 mm</span>
+                    <span className="font-bold text-zinc-700 dark:text-zinc-300">0 mm</span>
                   </div>
                   <div>
                     <span className="text-zinc-400 block">Wind</span>
-                    <span className="font-bold text-zinc-700 dark:text-zinc-350">12 km/h</span>
+                    <span className="font-bold text-zinc-700 dark:text-zinc-300">12 km/h</span>
                   </div>
                 </div>
               </div>
 
               <div className="grid grid-cols-4 gap-1.5 text-center text-[8px] sm:text-[9px] font-medium">
-                <div className="bg-zinc-50 dark:bg-zinc-950 p-2 rounded-lg border border-zinc-250/20">
-                  <span className="text-zinc-450 block">Tue</span>
+                <div className="bg-zinc-50 dark:bg-zinc-950 p-2 rounded-lg border border-zinc-300/20">
+                  <span className="text-zinc-500 block">Tue</span>
                   <Sun className="w-3.5 h-3.5 text-amber-500 mx-auto my-1" />
-                  <span className="text-zinc-700 dark:text-zinc-300 font-bold block">33°/25°</span>
+                  <span className="text-zinc-700 dark:text-zinc-350 font-bold block">33°/25°</span>
                 </div>
-                <div className="bg-zinc-50 dark:bg-zinc-950 p-2 rounded-lg border border-zinc-250/20">
-                  <span className="text-zinc-450 block">Wed</span>
+                <div className="bg-zinc-50 dark:bg-zinc-950 p-2 rounded-lg border border-zinc-300/20">
+                  <span className="text-zinc-500 block">Wed</span>
                   <CloudRain className="w-3.5 h-3.5 text-sky-400 mx-auto my-1" />
-                  <span className="text-zinc-700 dark:text-zinc-300 font-bold block">30°/23°</span>
+                  <span className="text-zinc-700 dark:text-zinc-350 font-bold block">30°/23°</span>
                 </div>
-                <div className="bg-zinc-50 dark:bg-zinc-950 p-2 rounded-lg border border-zinc-250/20">
-                  <span className="text-zinc-450 block">Thu</span>
+                <div className="bg-zinc-50 dark:bg-zinc-950 p-2 rounded-lg border border-zinc-300/20">
+                  <span className="text-zinc-500 block">Thu</span>
                   <CloudSun className="w-3.5 h-3.5 text-zinc-400 mx-auto my-1" />
-                  <span className="text-zinc-700 dark:text-zinc-300 font-bold block">29°/24°</span>
+                  <span className="text-zinc-700 dark:text-zinc-350 font-bold block">29°/24°</span>
                 </div>
-                <div className="bg-zinc-50 dark:bg-zinc-950 p-2 rounded-lg border border-zinc-250/20">
-                  <span className="text-zinc-450 block">Fri</span>
+                <div className="bg-zinc-50 dark:bg-zinc-950 p-2 rounded-lg border border-zinc-300/20">
+                  <span className="text-zinc-500 block">Fri</span>
                   <CloudRain className="w-3.5 h-3.5 text-emerald-500 mx-auto my-1" />
-                  <span className="text-zinc-700 dark:text-zinc-300 font-bold block">28°/22°</span>
+                  <span className="text-zinc-700 dark:text-zinc-350 font-bold block">28°/22°</span>
                 </div>
               </div>
             </div>
@@ -559,7 +559,7 @@ export const FarmerAdvisorView: React.FC = () => {
             </button>
 
             {isGeneratingPlan && (
-              <div className="mt-4 p-3 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl w-full max-w-xs flex items-center justify-center space-x-3 shadow-xs animate-pulse text-xs text-zinc-650 dark:text-zinc-400 font-mono">
+              <div className="mt-4 p-3 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl w-full max-w-xs flex items-center justify-center space-x-3 shadow-xs animate-pulse text-xs text-zinc-650 dark:text-zinc-450 font-mono">
                 <TrendingUp className="w-4 h-4 text-[#60993E]" />
                 <span>{steps[generationStep]}</span>
               </div>
@@ -571,9 +571,9 @@ export const FarmerAdvisorView: React.FC = () => {
         {showRecommendedCrops && (
           <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-sm rounded-2xl p-4 sm:p-5 space-y-4 animate-fadeIn">
             
-            <div className="flex items-center space-x-2.5 border-b border-zinc-150 dark:border-zinc-800 pb-3">
+            <div className="flex items-center space-x-2.5 border-b border-zinc-200 dark:border-zinc-800 pb-3">
               <Sparkles className="w-4.5 h-4.5 text-[#60993E]" />
-              <span className="text-xs font-bold text-zinc-850 dark:text-zinc-200">Recommended Crop Yields</span>
+              <span className="text-xs font-bold text-zinc-800 dark:text-zinc-200">Recommended Crop Yields</span>
             </div>
 
             <div className="space-y-4">
@@ -590,7 +590,7 @@ export const FarmerAdvisorView: React.FC = () => {
                 return (
                   <div
                     key={idx}
-                    className="bg-zinc-50 dark:bg-zinc-950 border border-zinc-200/50 dark:border-zinc-850 p-4 rounded-xl flex items-start gap-4 hover:shadow-sm transition relative overflow-hidden"
+                    className="bg-zinc-50 dark:bg-zinc-950 border border-zinc-200/50 dark:border-zinc-800 p-4 rounded-xl flex items-start gap-4 hover:shadow-sm transition relative overflow-hidden"
                   >
                     {/* circular score dial */}
                     <div className="flex items-center justify-center shrink-0 relative w-12 h-12">
@@ -608,14 +608,14 @@ export const FarmerAdvisorView: React.FC = () => {
                       <div className="flex justify-between items-center flex-wrap gap-2">
                         <div className="flex items-center space-x-2">
                           <span className="text-xl">{crop.icon}</span>
-                          <span className="text-xs font-bold text-zinc-850 dark:text-zinc-200">{crop.name}</span>
+                          <span className="text-xs font-bold text-zinc-800 dark:text-zinc-200">{crop.name}</span>
                         </div>
                         <span className={`text-[8px] font-bold px-2 py-0.5 rounded-full border uppercase tracking-wider ${accentColor}`}>
                           {crop.category}
                         </span>
                       </div>
 
-                      <p className="text-[11px] text-zinc-550 dark:text-zinc-400 leading-relaxed">{crop.desc}</p>
+                      <p className="text-[11px] text-zinc-500 dark:text-zinc-400 leading-relaxed">{crop.desc}</p>
 
                       <div className="grid grid-cols-2 gap-1.5 pt-1 text-[9px] text-zinc-500 dark:text-zinc-400">
                         <div>Period: <strong className="text-zinc-700 dark:text-zinc-300 font-bold">{crop.growth}</strong></div>

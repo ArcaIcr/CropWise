@@ -48,7 +48,7 @@ export const ReportCertificate: React.FC<IReportCertificateProps> = ({
             <span>Soil Diagnosis Certificate</span>
           </h3>
           <p className="text-[9px] sm:text-[10px] text-zinc-400 mt-1">{coop?.name || 'Northern Mindanao Farmers Association'}</p>
-          <p className="text-[8px] sm:text-[9px] text-zinc-550 mt-0.5">{coop?.barangay}, {coop?.city}, {coop?.province}</p>
+          <p className="text-[8px] sm:text-[9px] text-zinc-500 mt-0.5">{coop?.barangay}, {coop?.city}, {coop?.province}</p>
         </div>
         <div className="text-left sm:text-right text-[9px] sm:text-[10px] text-zinc-500 space-y-1">
           <p>Certificate ID: <span className="font-mono text-zinc-300 font-bold">{report.id.substring(0, 13).toUpperCase()}</span></p>
@@ -60,7 +60,7 @@ export const ReportCertificate: React.FC<IReportCertificateProps> = ({
       {/* Target Farmer Details Card */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 bg-zinc-950/30 p-3 sm:p-4 rounded-xl border border-zinc-900 print-card">
         <div className="flex items-center space-x-2 sm:space-x-3">
-          <div className="p-2 bg-zinc-900 rounded-lg text-zinc-500 border border-zinc-850 flex-shrink-0">
+          <div className="p-2 bg-zinc-900 rounded-lg text-zinc-500 border border-zinc-800 flex-shrink-0">
             <User className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
           </div>
           <div>
@@ -71,7 +71,7 @@ export const ReportCertificate: React.FC<IReportCertificateProps> = ({
         </div>
         
         <div className="flex items-center space-x-2 sm:space-x-3">
-          <div className="p-2 bg-zinc-900 rounded-lg text-zinc-500 border border-zinc-850 flex-shrink-0">
+          <div className="p-2 bg-zinc-900 rounded-lg text-zinc-500 border border-zinc-800 flex-shrink-0">
             <MapPin className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
           </div>
           <div>
@@ -82,7 +82,7 @@ export const ReportCertificate: React.FC<IReportCertificateProps> = ({
         </div>
 
         <div className="flex items-center space-x-2 sm:space-x-3">
-          <div className="p-2 bg-zinc-900 rounded-lg text-zinc-500 border border-zinc-850 flex-shrink-0">
+          <div className="p-2 bg-zinc-900 rounded-lg text-zinc-500 border border-zinc-800 flex-shrink-0">
             <Calendar className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
           </div>
           <div>
@@ -139,11 +139,11 @@ export const ReportCertificate: React.FC<IReportCertificateProps> = ({
               <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed">{translate(rec.recommendationText)}</p>
               {rec.rateKgPerHectare > 0 && (
                 <div className="flex flex-wrap gap-3 sm:gap-4 pt-1 text-[8px] sm:text-[9px] text-zinc-500 font-semibold uppercase tracking-wider">
-                  <span>Rate: <strong className="text-zinc-350">{rec.rateKgPerHectare} kg/ha</strong></span>
+                  <span>Rate: <strong className="text-zinc-400">{rec.rateKgPerHectare} kg/ha</strong></span>
                   <span>•</span>
                   <span>Total needed: <strong className="text-emerald-400">{rec.totalNeededKg} kg ({rec.totalBags} bags)</strong></span>
                   <span>•</span>
-                  <span>Type: <strong className="text-zinc-350">{rec.fertilizerType}</strong></span>
+                  <span>Type: <strong className="text-zinc-400">{rec.fertilizerType}</strong></span>
                 </div>
               )}
             </div>
@@ -160,7 +160,7 @@ export const ReportCertificate: React.FC<IReportCertificateProps> = ({
           ) : (
             recData.totalFertilizers.map((tf, idx) => (
               <div key={idx} className="flex justify-between items-center text-xs sm:text-sm pt-2 first:pt-0">
-                <span className="font-semibold text-zinc-350">{tf.fertilizerType}</span>
+                <span className="font-semibold text-zinc-400">{tf.fertilizerType}</span>
                 <span className="font-bold text-emerald-400">{tf.totalBags} Bag(s) <span className="text-[9px] sm:text-[10px] text-zinc-500 font-normal">({tf.totalKg} kg)</span></span>
               </div>
             ))
@@ -169,7 +169,7 @@ export const ReportCertificate: React.FC<IReportCertificateProps> = ({
       </div>
 
       {/* Official disclaimer */}
-      <div className="border-t border-zinc-900 pt-4 text-[8px] sm:text-[9px] text-zinc-550 text-center leading-relaxed">
+      <div className="border-t border-zinc-900 pt-4 text-[8px] sm:text-[9px] text-zinc-500 text-center leading-relaxed">
         <p>Disclaimer: Agronomic calculations are rule-based and derived from regional soil limits mapped by the Bureau of Soils and Water Management (DA-BSWM). Consult cooperative specialists to audit field-level moisture variations.</p>
       </div>
 

@@ -132,7 +132,7 @@ export const FarmerReportView: React.FC = () => {
       return (
         <FarmerLayout title="Soil Report Details">
           <div className="text-center py-12">
-            <FileText className="w-16 h-16 text-zinc-300 dark:text-zinc-650 mx-auto mb-4" />
+            <FileText className="w-16 h-16 text-zinc-300 dark:text-zinc-500 mx-auto mb-4" />
             <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-2">Report Not Found</h3>
             <button 
               onClick={() => navigate('/farmer/reports')}
@@ -152,13 +152,13 @@ export const FarmerReportView: React.FC = () => {
           <div className="flex items-center justify-between bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-3 rounded-2xl">
             <button 
               onClick={() => navigate('/farmer/reports')}
-              className="flex items-center space-x-1.5 text-zinc-500 hover:text-zinc-350 text-xs font-semibold cursor-pointer py-1.5 px-3 rounded-xl hover:bg-zinc-100 dark:hover:bg-zinc-800 transition"
+              className="flex items-center space-x-1.5 text-zinc-500 hover:text-zinc-300 text-xs font-semibold cursor-pointer py-1.5 px-3 rounded-xl hover:bg-zinc-100 dark:hover:bg-zinc-800 transition"
             >
               <ArrowLeft className="w-4 h-4 animate-pulse" />
               <span>Back</span>
             </button>
 
-            <div className="flex items-center space-x-1 bg-zinc-100 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-850 p-0.5 rounded-xl text-[10px]">
+            <div className="flex items-center space-x-1 bg-zinc-100 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 p-0.5 rounded-xl text-[10px]">
               <button
                 onClick={() => setLang('en')}
                 className={`px-3 py-1.5 rounded-lg font-bold uppercase tracking-wider transition cursor-pointer min-h-[36px] ${
@@ -209,7 +209,7 @@ export const FarmerReportView: React.FC = () => {
     <FarmerLayout title="My Reports">
       {allReports.length === 0 ? (
         <div className="text-center py-12">
-          <FileText className="w-16 h-16 text-zinc-300 dark:text-zinc-650 mx-auto mb-4" />
+          <FileText className="w-16 h-16 text-zinc-300 dark:text-zinc-500 mx-auto mb-4" />
           <h3 className="text-xl font-semibold text-zinc-900 dark:text-white mb-2">No Reports Yet</h3>
           <p className="text-zinc-500 dark:text-zinc-400">Your field officer will generate reports after soil testing.</p>
         </div>

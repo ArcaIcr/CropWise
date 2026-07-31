@@ -7,6 +7,7 @@ const FarmerDashboard = lazy(() => import('./FarmerDashboard').then(m => ({ defa
 const FarmerReportView = lazy(() => import('./FarmerReportView').then(m => ({ default: m.FarmerReportView })));
 const SoilReadingDetail = lazy(() => import('./SoilReadingDetail').then(m => ({ default: m.SoilReadingDetail })));
 const FarmerLogin = lazy(() => import('./FarmerLogin').then(m => ({ default: m.FarmerLogin })));
+const FarmerAdvisorView = lazy(() => import('./FarmerAdvisorView').then(m => ({ default: m.FarmerAdvisorView })));
 
 function LoadingFallback() {
   return (
@@ -38,6 +39,7 @@ export function FarmerRoutes() {
         <Route path="reports" element={<FarmerReportView />} />
         <Route path="reports/:reportId" element={<FarmerReportView />} />
         <Route path="reading/:readingId" element={<SoilReadingDetail />} />
+        <Route path="advisor" element={<FarmerAdvisorView />} />
         <Route path="*" element={<Navigate to="/farmer" replace />} />
       </Routes>
     </Suspense>

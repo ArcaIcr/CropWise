@@ -45,21 +45,67 @@ export const FarmerDashboard: React.FC = () => {
     return report.reportStatus === 'finalized' ? 'Ready' : 'Draft';
   };
 
+  const totalArea = plots.reduce((sum, p) => sum + p.areaHectares, 0);
+  const activeCropsCount = plots.length;
+
+  // Calculate if any plot is deficient based on standard agronomic thresholds:
+  // pH < 5.5 (Acidic), N < 20 ppm, P < 8 ppm, K < 60 ppm
+  const deficientPlots = plots.filter(plot => {
+    const reading = plot.latestReading;
+    if (!reading) return false;
+    return reading.ph < 5.5 || reading.nitrogen < 20 || reading.phosphorus < 8 || reading.potassium < 60;
+  });
+
   return (
     <FarmerLayout title="My Farm">
       {/* Welcome Card */}
-      <div className="bg-emerald-600 rounded-2xl p-5 mb-6 text-white">
-        <div className="flex items-center justify-between">
+      <div className="bg-gradient-to-br from-emerald-600 to-green-700 dark:from-emerald-950 dark:to-zinc-900 border border-emerald-500/20 dark:border-zinc-800 rounded-2xl p-5 mb-6 text-white shadow-lg relative overflow-hidden">
+        {/* Glow accent */}
+        <div className="absolute right-0 top-0 w-32 h-32 bg-emerald-400/10 blur-[40px] rounded-full pointer-events-none" />
+        <div className="flex items-center justify-between relative z-10">
           <div>
-            <p className="text-emerald-100 text-sm">Welcome back,</p>
-            <h2 className="text-xl font-bold">{farmer.name}</h2>
-            <p className="text-emerald-100 text-sm mt-1">{farmer.barangay} • {farmer.phone}</p>
+            <p className="text-emerald-100 dark:text-emerald-400/80 text-sm">Welcome back,</p>
+            <h2 className="text-xl font-bold tracking-tight mt-0.5">{farmer.name}</h2>
+            <p className="text-emerald-100/90 dark:text-zinc-400 text-xs mt-1.5 font-medium">{farmer.barangay} • {farmer.phone}</p>
           </div>
-          <div className="w-16 h-16 bg-white/20 rounded-xl flex items-center justify-center">
-            <Leaf className="w-8 h-8 text-emerald-600" />
+          <div className="w-16 h-16 bg-white/10 dark:bg-emerald-900/30 border border-white/10 dark:border-emerald-800/20 rounded-2xl flex items-center justify-center shadow-inner">
+            <Leaf className="w-8 h-8 text-emerald-250 dark:text-emerald-400" />
           </div>
         </div>
       </div>
+
+      {/* Stats Grid */}
+      <div className="grid grid-cols-3 gap-3 mb-6">
+        <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-3 text-center shadow-sm">
+          <p className="text-[10px] text-zinc-500 uppercase tracking-wider font-semibold">Total Land</p>
+          <p className="text-base sm:text-lg font-extrabold text-zinc-900 dark:text-white mt-1">{totalArea.toFixed(1)} ha</p>
+        </div>
+        <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-3 text-center shadow-sm">
+          <p className="text-[10px] text-zinc-500 uppercase tracking-wider font-semibold">Plots Active</p>
+          <p className="text-base sm:text-lg font-extrabold text-zinc-900 dark:text-white mt-1">{activeCropsCount}</p>
+        </div>
+        <div className={`border rounded-2xl p-3 text-center shadow-sm ${
+          deficientPlots.length > 0
+            ? 'bg-amber-500/10 border-amber-500/30 text-amber-600 dark:text-amber-400'
+            : 'bg-emerald-500/10 border-emerald-500/30 text-emerald-600 dark:text-emerald-400'
+        }`}>
+          <p className="text-[10px] uppercase tracking-wider font-semibold">Deficiency</p>
+          <p className="text-base sm:text-lg font-extrabold mt-1">{deficientPlots.length > 0 ? `${deficientPlots.length} Alert` : 'Optimal'}</p>
+        </div>
+      </div>
+
+      {/* Deficiency warning banner if any are deficient */}
+      {deficientPlots.length > 0 && (
+        <div className="mb-6 bg-amber-500/10 border border-amber-500/25 text-amber-800 dark:text-amber-300 p-3.5 rounded-2xl text-xs flex items-start gap-2.5 shadow-sm">
+          <Sparkles className="w-5 h-5 shrink-0 text-amber-500" />
+          <div>
+            <span className="font-bold">Soil Nutrients Warning:</span>
+            <p className="text-zinc-500 dark:text-zinc-400 mt-0.5">
+              Some farm plots ({deficientPlots.map(p => p.plotName).join(', ')}) show low soil chemistry readings. Review recommendations to apply appropriate fertilizers.
+            </p>
+          </div>
+        </div>
+      )}
 
       {/* Plots Overview */}
       <div className="mb-6">
@@ -76,8 +122,25 @@ export const FarmerDashboard: React.FC = () => {
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {plots.map((plot: typeof plots[0]) => (
-              <div key={plot.id} className="bg-white dark:bg-zinc-900 rounded-2xl p-5 border border-zinc-200 dark:border-zinc-800 shadow-sm">
+            {plots.map((plot: typeof plots[0]) => {
+              const isPlotDeficient = plot.latestReading && (
+                plot.latestReading.ph < 5.5 ||
+                plot.latestReading.nitrogen < 20 ||
+                plot.latestReading.phosphorus < 8 ||
+                plot.latestReading.potassium < 60
+              );
+
+              const accentClass = isPlotDeficient 
+                ? 'border-l-4 border-l-amber-500' 
+                : plot.latestReport 
+                  ? 'border-l-4 border-l-emerald-500' 
+                  : 'border-l-4 border-l-zinc-300 dark:border-l-zinc-700';
+
+              return (
+                <div 
+                  key={plot.id} 
+                  className={`bg-white dark:bg-zinc-900 rounded-2xl p-5 border border-zinc-200 dark:border-zinc-800 shadow-sm transition hover:shadow-md ${accentClass}`}
+                >
                 <div className="flex items-start justify-between mb-4">
                   <div>
                     <h4 className="font-semibold text-zinc-900 dark:text-white">{plot.plotName}</h4>
@@ -132,7 +195,7 @@ export const FarmerDashboard: React.FC = () => {
 
                 {plot.latestReport && (
                   <button 
-                    onClick={() => navigate('/farmer/reports')}
+                    onClick={() => navigate(`/farmer/reports/${plot.latestReport?.id}`)}
                     className="w-full mt-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-xl flex items-center justify-center gap-2 transition cursor-pointer"
                   >
                     <FileText className="w-4 h-4" />
@@ -140,8 +203,9 @@ export const FarmerDashboard: React.FC = () => {
                     <ChevronRight className="w-4 h-4" />
                   </button>
                 )}
-              </div>
-            ))}
+                </div>
+              );
+            })}
           </div>
         )}
       </div>
@@ -157,7 +221,7 @@ export const FarmerDashboard: React.FC = () => {
           <span className="text-xs text-zinc-500">{plots.filter(p => p.latestReport).length} available</span>
         </button>
         <button 
-          onClick={() => navigate('/farmer/reports')}
+          onClick={() => navigate('/farmer/advisor')}
           className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4 flex flex-col items-center gap-2 cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-800 transition"
         >
           <Sparkles className="w-6 h-6 text-amber-500" />
